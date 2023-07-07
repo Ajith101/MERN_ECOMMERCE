@@ -15,7 +15,9 @@ const Footer = () => {
         {" "}
         <div className="flex w-full flex-col gap-[20px] md:flex-row md:items-start md:justify-between md:px-[50px]">
           <div className="flex w-[80%] flex-col items-start md:w-auto">
-            <h1 className="text-[28px] font-[700]">Shopping App</h1>
+            <h1 className="text-[20px] font-[700] sm:text-[24px]">
+              Shopping App
+            </h1>
 
             <p>
               Shop Smarter, Shop Better - Enjoy Convenience and Quality at Your

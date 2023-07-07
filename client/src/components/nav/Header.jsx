@@ -32,7 +32,7 @@ const Header = () => {
     <>
       <div className="sticky top-0 z-[100] flex w-full items-center justify-between border-b-[1px] bg-blue-950 px-[20px] py-[18px] text-white sm:py-[20px] md:px-[50px] lg:px-[110px]">
         <h1
-          className="cursor-pointer text-[18px] font-[700] sm:text-[28px]"
+          className="cursor-pointer text-[20px] font-[700] sm:text-[28px]"
           onClick={() => navigate("/")}
         >
           Shopping App
