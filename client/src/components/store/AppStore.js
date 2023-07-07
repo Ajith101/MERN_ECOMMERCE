@@ -39,7 +39,7 @@ export const useAppStore = create((set, get) => {
           loading: false,
         }));
       } catch (error) {
-        set(() => ({ errors: response.data.message, loading: false }));
+        set(() => ({ errors: error, loading: false }));
       }
     },
     increaseQty: () => {

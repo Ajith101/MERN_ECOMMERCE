@@ -14,6 +14,7 @@ const SingleProduct = () => {
     increaseQty,
     decreaseQtys,
     loading,
+    errors,
   ] = useAppStore((state) => {
     return [
       state.addToCart,
@@ -22,6 +23,7 @@ const SingleProduct = () => {
       state.increaseQty,
       state.decreaseQtys,
       state.loading,
+      state.errors,
     ];
   });
   const { id } = useParams();
@@ -123,9 +125,9 @@ const SingleProduct = () => {
             </div>
           </div>
         </div>
-      ) : (
+      ) : errors ? (
         <PageNotFound />
-      )}
+      ) : null}
     </Layout>
   );
 };
