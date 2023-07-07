@@ -90,7 +90,7 @@ const Hero = () => {
                   : currentCategory.toUpperCase()}
               </h2>
               <div className="grid grid-cols-2 gap-[10px] sm:grid-cols-3 md:grid-cols-4 md:gap-[25px] lg:grid-cols-5">
-                {displayProducts}
+                {loading ? <span className="loader"></span> : displayProducts}
               </div>
             </>
           )}
