@@ -2,10 +2,11 @@ const express = require("express");
 const productRoute = require("./routes/productRoute");
 const cors = require("cors");
 const morgan = require("morgan");
-
+const dotenv = require("dotenv");
+dotenv.config();
 const app = express();
 
-const PORT = 2020;
+const PORT = process.env.PORT | 2040;
 
 app.use(cors());
 app.use(morgan("dev"));
