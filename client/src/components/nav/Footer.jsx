@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useAppStore } from "../store/AppStore";
+import { useAppStore } from "../../utils/store/AppStore";
 
 const Footer = () => {
   const [getCategoryNames, categorys] = useAppStore((state) => {

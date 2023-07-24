@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { CgSearch } from "react-icons/cg";
 import axios from "axios";
-import { BASE_URL } from "./../store/AppStore";
+import { BASE_URL } from "../../utils/store/AppStore";
 import SearchCards from "./SearchCards";
 
 const Search = () => {

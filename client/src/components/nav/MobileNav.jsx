@@ -8,7 +8,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { FaTwitter, FaYoutube } from "react-icons/fa";
 import { BsInstagram } from "react-icons/bs";
 import { BiLogoFacebookSquare, BiSolidConversation } from "react-icons/bi";
-import { useAppStore } from "../store/AppStore";
+import { useAppStore } from "../../utils/store/AppStore";
 
 export const navLinks = [
   { name: "Home", to: "/", icon: <AiFillHome size={"18px"} /> },

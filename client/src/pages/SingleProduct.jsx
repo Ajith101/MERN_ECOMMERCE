@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import Layout from "../layout/Layout";
+import Layout from "../components/layout/Layout";
 import { useParams } from "react-router-dom";
-import { useAppStore } from "../store/AppStore";
-import StarRating from "../star/StarRating";
+import { useAppStore } from "../utils/store/AppStore";
+import StarRating from "../components/StarRating";
 import PageNotFound from "./PageNotFound";
 
 const SingleProduct = () => {

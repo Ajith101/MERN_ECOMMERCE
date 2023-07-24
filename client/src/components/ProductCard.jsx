@@ -1,8 +1,8 @@
 import React from "react";
-import StarRating from "../star/StarRating";
 import { useNavigate } from "react-router-dom";
 import { BsCart2 } from "react-icons/bs";
-import { useAppStore } from "../store/AppStore";
+import { useAppStore } from "../utils/store/AppStore";
+import StarRating from "./StarRating";
 
 const ProductCard = ({ item }) => {
   const navigate = useNavigate();

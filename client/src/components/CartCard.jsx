@@ -2,7 +2,7 @@ import React from "react";
 import { BiPlus } from "react-icons/bi";
 import { BiMinus } from "react-icons/bi";
 import { GrClose } from "react-icons/gr";
-import { useAppStore } from "../store/AppStore";
+import { useAppStore } from "../utils/store/AppStore";
 import { useNavigate } from "react-router-dom";
 
 const CartCard = ({ item }) => {

@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
-import Layout from "../layout/Layout";
-import { useAppStore } from "../store/AppStore";
-import CartCard from "../product/CartCard";
+import Layout from "../components/layout/Layout";
+import { useAppStore } from "../utils/store/AppStore";
+import CartCard from "../components/CartCard";
 import { BiCartDownload } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
 import { HiArrowRight } from "react-icons/hi";

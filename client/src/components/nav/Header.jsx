@@ -4,7 +4,7 @@ import { BiSolidUser } from "react-icons/bi";
 import { CiMenuFries } from "react-icons/ci";
 import MobileNav from "./MobileNav";
 import { NavLink, useNavigate } from "react-router-dom";
-import { useAppStore } from "../store/AppStore";
+import { useAppStore } from "../../utils/store/AppStore";
 import { RiShoppingCartFill } from "react-icons/ri";
 
 export const CartNumber = ({ cart }) => {
@@ -37,31 +37,6 @@ const Header = () => {
         >
           Shopping App
         </h1>
-
-        <nav className="hidden sm:block">
-          <ul className="flex items-center justify-center gap-[35px] text-[20px]">
-            <li>
-              <NavLink
-                to="/"
-                className={({ isActive }) =>
-                  isActive
-                    ? "relative border-b-[2px] text-[18px] font-[900] text-slate-500"
-                    : ""
-                }
-              >
-                Home
-              </NavLink>
-            </li>
-            <li>
-              <NavLink
-                to="/cart"
-                className={({ isActive }) => (isActive ? "underline" : "")}
-              >
-                Cart
-              </NavLink>
-            </li>
-          </ul>
-        </nav>
         <div className="hidden items-center justify-center gap-[15px] text-[20px] sm:flex">
           <div className="relative" onClick={() => navigate("/cart")}>
             <RiShoppingCartFill size={"20px"} />

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import Layout from "../layout/Layout";
-import Search from "../search/Search";
-import { BASE_URL, useAppStore } from "../store/AppStore";
-import ProductCard from "../product/ProductCard";
-import axios from "../store/axios";
+import Layout from "../components/layout/Layout";
+import Search from "../components/search/Search";
+import axios from "../utils/store/axios";
+import { useAppStore } from "../utils/store/AppStore";
+import ProductCard from "./../components/ProductCard";
 
 const Hero = () => {
   const [currentCategory, setCurrentCategory] = useState(null);
