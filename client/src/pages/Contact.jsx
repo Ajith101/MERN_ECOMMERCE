@@ -22,10 +22,10 @@ const Contact = () => {
 
   return (
     <Layout>
+      <h1 className="px-[20px] py-[20px] font-font-1 text-[20px] font-extrabold">
+        Contact
+      </h1>
       <div className="mx-auto my-0 w-[90%] max-w-[650px] bg-blue-200">
-        <h1 className="px-[15px] py-[20px] font-font-1 text-[18px] font-extrabold">
-          Contact
-        </h1>
         <form
           className="flex w-full flex-col gap-[10px] p-[10px]"
           onSubmit={handleSubmit}
@@ -74,7 +74,7 @@ const Contact = () => {
           </div>
           <button
             type="submit"
-            className="w-fit cursor-pointer rounded-[6px] bg-blue-950 px-[25px] py-[8px] text-center text-[14px] font-[500] text-white sm:text-[16px]"
+            className="w-fit cursor-pointer rounded-[6px] bg-blue-950 px-[25px] py-[10px] text-center text-[16px] font-[500] text-white sm:text-[16px]"
           >
             Submit
           </button>

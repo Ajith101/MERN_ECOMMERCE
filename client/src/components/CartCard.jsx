@@ -62,7 +62,7 @@ const CartCard = ({ item }) => {
       </div> */}
       <div className="w-[60px]">
         <h2 className="text-[16px] font-medium text-[#121212] sm:text-[18px]">
-          $ {item.price}
+          $ <span className="text-red-500">{item.price}</span>
         </h2>
       </div>
       <div className="flex w-[60px] cursor-pointer justify-end">

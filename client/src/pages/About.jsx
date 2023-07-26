@@ -11,7 +11,7 @@ const About = () => {
         <h1 className="py-[25px] font-font-1 text-[16px] font-extrabold">
           About Us
         </h1>
-        <p className="font-font-1 font-medium text-slate-800">
+        <p className="font-medium text-slate-800">
           we are passionate about creating an exceptional online shopping
           experience for our valued customers. Our platform is designed to bring
           you a diverse range of high-quality products, seamless navigation, and

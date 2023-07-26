@@ -20,23 +20,41 @@ const Cart = () => {
     window.scrollTo(0, 0);
   }, []);
 
+  const totalDiscount = cart
+    ?.map((item) => {
+      return item.discountPercentage;
+    })
+    ?.reduce((a, b) => {
+      return a + b;
+    });
+
+  const totalAmount = cart
+    ?.map((item) => {
+      return item.qty * item.price;
+    })
+    ?.reduce((a, b) => {
+      return a + b;
+    });
+
   return (
     <>
       <Layout>
-        {cart.length ? (
+        {cart?.length ? (
           <div className="flex flex-col justify-between sm:flex-row">
             <div className="flex w-full flex-col justify-start gap-[10px] sm:w-[70%] sm:gap-[20px]">
               {displayCartItems}
             </div>
-            <div className="top-[80px] flex h-[450px] flex-col justify-between gap-[15px] bg-blue-950 text-white sm:sticky">
-              <h1 className="p-[15px] text-[22px] font-[500]">
-                Payment details
+            <div className="top-[80px] flex h-fit flex-col gap-[5px] bg-blue-950 text-white sm:sticky">
+              <h1 className="p-[15px] text-[16px] font-[600] sm:text-[20px]">
+                Payment Details
               </h1>
-              <h2 className="p-[15px]">Discount = 50%</h2>
-              <h1 className="p-[15px] text-[22px] font-[500]">
-                Total amount = $ 50000
+              <h2 className="p-[15px] text-[16px] font-medium sm:text-[20px]">
+                Discount = {Math.ceil(totalDiscount)}%
+              </h2>
+              <h1 className="p-[15px] text-[16px] font-[500]">
+                Total amount = $ {Math.ceil(totalAmount)}
               </h1>
-              <div className="w-full bg-slate-500 py-[15px] text-center text-[18px]">
+              <div className="w-full bg-slate-500 py-[15px] text-center text-[16px] font-[700]">
                 Confirm to checkout
               </div>
             </div>

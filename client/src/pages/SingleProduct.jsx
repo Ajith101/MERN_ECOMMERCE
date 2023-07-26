@@ -89,6 +89,13 @@ const SingleProduct = () => {
                 {"$"}
                 {singleItem?.price}
               </h1>
+              <s className="text-[18px] text-slate-600">
+                {"$"}
+                {Math.ceil(
+                  (singleItem?.price * 100) /
+                    (100 - singleItem?.discountPercentage)
+                )}
+              </s>
               <span className="flex items-center justify-center rounded-[4px] bg-green-500 bg-opacity-90 px-[10px] py-[4px] text-center text-[12px] text-white">
                 {singleItem?.discountPercentage}
                 {"%"}
