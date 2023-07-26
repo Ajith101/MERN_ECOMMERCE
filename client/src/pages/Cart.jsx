@@ -26,7 +26,7 @@ const Cart = () => {
     })
     ?.reduce((a, b) => {
       return a + b;
-    });
+    }, 0);
 
   const totalAmount = cart
     ?.map((item) => {
@@ -34,7 +34,7 @@ const Cart = () => {
     })
     ?.reduce((a, b) => {
       return a + b;
-    });
+    }, 0);
 
   return (
     <>
