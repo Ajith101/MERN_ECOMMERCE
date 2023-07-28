@@ -8,7 +8,21 @@ const app = express();
 
 const PORT = process.env.PORT | 2040;
 
-app.use(cors());
+app.use(
+  cors({
+    origin: `${process.env.BASE_URL}`,
+    methods: "GET ,PUT , POST ,DELETE",
+    credentials: true,
+  })
+);
+
+app.use((req, res, next) => {
+  res.setHeader("Access-Control-Alow-Origin", `${process.env.BASE_URL}`);
+  res.setHeader("Access-Control-Alow-Methods", "GET ,PUT ,POST ,DELETE");
+  res.setHeader("Access-Control-Alow-Credentials", "true");
+  next();
+});
+
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
