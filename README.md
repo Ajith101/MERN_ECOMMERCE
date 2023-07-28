@@ -1,7 +1,7 @@
 # Product Listing App
 
 ![Shopping App4](https://github.com/Ajith101/MERN_ECOMMERCE/assets/41799543/3aa1653d-d08a-4f42-8be4-ec0fc7d71de5)
-![mobile (3)](https://github.com/Ajith101/MERN_ECOMMERCE/assets/41799543/26e6c2ba-7c24-4fd5-8bf8-1e8c94aae5bb | width=100)
+<img src="https://github.com/Ajith101/MERN_ECOMMERCE/assets/41799543/26e6c2ba-7c24-4fd5-8bf8-1e8c94aae5bb" width="120" height="455">
 
 This is a Product Listing App, designed to showcase a collection of products with categories and search functionality. The application provides users with an interface to browse through a wide range of products, view product details, and filter products based on categories. Additionally, it includes a shopping cart functionality that allows users to add products to their cart and proceed to checkout. The app is built using modern web development technologies to ensure high performance and responsiveness.
 
