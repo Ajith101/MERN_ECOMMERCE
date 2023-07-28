@@ -9,6 +9,7 @@ import SingleProduct from "../pages/SingleProduct";
 import PageNotFound from "../pages/PageNotFound";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Swipper from "../components/Swipper";
 
 const AppLayout = () => {
   return (

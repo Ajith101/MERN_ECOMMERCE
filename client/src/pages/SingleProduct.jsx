@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import { useAppStore } from "../utils/store/AppStore";
 import StarRating from "../components/StarRating";
 import PageNotFound from "./PageNotFound";
+import Swipper from "../components/Swipper";
 
 const SingleProduct = () => {
   const [imagePreview, setImagePreview] = useState(null);
@@ -40,39 +41,7 @@ const SingleProduct = () => {
         <div className="flex w-full flex-col gap-[25px] sm:flex-row">
           <div className="flex w-full flex-col sm:w-[50%]">
             <div className="flex flex-col items-center justify-center">
-              <div className="h-[250px] w-[250px] rounded-[35px] sm:h-[450px] sm:w-[520px] sm:bg-[#F9F8F8] sm:p-[15px]">
-                <img
-                  src={
-                    imagePreview
-                      ? imagePreview
-                        ? imagePreview
-                        : "https://upload.wikimedia.org/wikipedia/commons/2/24/Circle-icons-image.svg"
-                      : singleItem?.thumbnail
-                  }
-                  className="h-full w-full overflow-hidden rounded-[35px] object-contain"
-                  alt=""
-                />
-              </div>
-              <div className="grid grid-cols-5 gap-[15px] py-[20px] sm:gap-[40px]">
-                {singleItem?.images?.map((item, id) => {
-                  return (
-                    <div
-                      key={id}
-                      className={`h-[80px] cursor-pointer border-[2px] ${
-                        item === imagePreview
-                          ? "overflow-hidden rounded-[10px] border-blue-950"
-                          : null
-                      }`}
-                      onClick={() => setImagePreview(item)}
-                    >
-                      <img
-                        src={item}
-                        className="h-full w-full object-contain"
-                      />
-                    </div>
-                  );
-                })}
-              </div>
+              <Swipper image={singleItem?.images} />
             </div>
           </div>
           <div className="flex w-full flex-col gap-[10px] sm:w-[50%]">
