@@ -75,7 +75,7 @@ export const useAppStore = create((set, get) => {
         toast.success("Added to cart");
         localStorage.setItem("cart", JSON.stringify(updatedCart));
       } else {
-        set((state) => ({ cart: [...state.cart, { ...data, qty: 1 }] }));
+        set((state) => ({ cart: [{ ...data, qty: 1 }, ...state.cart] }));
         toast.success("Added to cart");
         localStorage.setItem("cart", JSON.stringify(get().cart));
       }
@@ -91,9 +91,8 @@ export const useAppStore = create((set, get) => {
         localStorage.setItem("cart", JSON.stringify(updatedCart));
         toast.success("Added to cart");
       } else {
-        set((state) => ({ cart: [...state.cart, data] }));
+        set((state) => ({ cart: [data, ...state.cart] }));
         localStorage.setItem("cart", JSON.stringify(get().cart));
-
         toast.success("Added to cart");
       }
     },
