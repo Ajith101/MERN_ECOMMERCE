@@ -1,0 +1,13 @@
+export { default as About } from "./About";
+export { default as Contact } from "./Contact";
+export { default as Login } from "./Login";
+export { default as Register } from "./Register";
+export { default as Cart } from "./Cart";
+export { default as PageNotFound } from "./PageNotFound";
+export { default as Hero } from "./Hero";
+export { default as AddCategory } from "./AddCategory";
+export { default as AddProduct } from "./AddProduct";
+export { default as Category } from "./Category";
+export { default as Products } from "./Products";
+export { default as DashboardPage } from "./DashboardPage";
+export { default as ByCategory } from "./ByCategory";

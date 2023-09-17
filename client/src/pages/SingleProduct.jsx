@@ -8,7 +8,7 @@ import Swipper from "../components/Swipper";
 
 const SingleProduct = () => {
   const [imagePreview, setImagePreview] = useState(null);
-  const [
+  const {
     addToCart,
     getSingleProduct,
     singleItem,
@@ -16,21 +16,10 @@ const SingleProduct = () => {
     decreaseQtys,
     loading,
     errors,
-  ] = useAppStore((state) => {
-    return [
-      state.addToCart,
-      state.getSingleProduct,
-      state.singleItem,
-      state.increaseQty,
-      state.decreaseQtys,
-      state.loading,
-      state.errors,
-    ];
-  });
+  } = useAppStore();
   const { id } = useParams();
   useEffect(() => {
     getSingleProduct(id);
-    window.scrollTo(0, 0);
   }, [id]);
 
   return (
@@ -46,10 +35,10 @@ const SingleProduct = () => {
           </div>
           <div className="flex w-full flex-col gap-[10px] sm:w-[50%]">
             <span className="uppercase text-blue-950">
-              {singleItem?.category}
+              {singleItem?.category?.name}
             </span>
-            <h1 className="text-[26px] font-[600]">{singleItem?.title}</h1>
-            <StarRating rating={singleItem?.rating} />
+            <h1 className="text-[26px] font-[600]">{singleItem?.name}</h1>
+            <StarRating rating={singleItem?.totalRatings} />
             <p className="py-[15px] text-slate-600">
               {singleItem?.description}
             </p>
@@ -61,12 +50,11 @@ const SingleProduct = () => {
               <s className="text-[18px] text-slate-600">
                 {"$"}
                 {Math.ceil(
-                  (singleItem?.price * 100) /
-                    (100 - singleItem?.discountPercentage)
+                  (singleItem?.price * 100) / (100 - singleItem?.discountPrice)
                 )}
               </s>
               <span className="flex items-center justify-center rounded-[4px] bg-green-500 bg-opacity-90 px-[10px] py-[4px] text-center text-[12px] text-white">
-                {singleItem?.discountPercentage}
+                {singleItem?.discountPrice}
                 {"%"}
               </span>
             </div>
@@ -79,7 +67,7 @@ const SingleProduct = () => {
                   -
                 </button>
                 {/* <p>{checkCartExist ? checkCartExist?.qty : singleItem?.qty}</p> */}
-                <p>{singleItem?.qty}</p>
+                <p>{singleItem?.stock}</p>
                 <button
                   onClick={() => increaseQty()}
                   className="px-[14px] py-[8px] text-center text-[16px] sm:px-[20px] sm:text-[28px]"

@@ -2,10 +2,7 @@ import React, { useEffect } from "react";
 import { useAppStore } from "../../utils/store/AppStore";
 
 const Footer = () => {
-  const [getCategoryNames, categorys] = useAppStore((state) => {
-    return [state.getCategoryNames, state.categorys];
-  });
-  // console.log(categorys);
+  const { categorys, getCategoryNames } = useAppStore();
   useEffect(() => {
     getCategoryNames();
   }, []);
@@ -28,7 +25,9 @@ const Footer = () => {
             <h1 className="text-[20px] font-[700]">Category</h1>
             {categorys?.slice(0, 5).map((item, id) => {
               return (
-                <h3 key={id}>{item.charAt(0).toUpperCase() + item.slice(1)}</h3>
+                <h3 key={id}>
+                  {item?.name?.charAt(0).toUpperCase() + item.name?.slice(1)}
+                </h3>
               );
             })}
           </div>

@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
-import { Pagination, Navigation, Thumbs } from "swiper/modules";
+import { Pagination, Thumbs } from "swiper/modules";
 
 const Swipper = ({ image }) => {
   const [thumbSwipper, setThumbsSwiper] = useState(null);

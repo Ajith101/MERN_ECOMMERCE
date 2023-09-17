@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { BiSolidWalletAlt } from "react-icons/bi";
 import { BiSolidUserCircle } from "react-icons/bi";
 import { AiTwotoneHeart } from "react-icons/ai";
-import { IoIosArrowBack } from "react-icons/io";
 import { BsCartFill, BsFillSunFill } from "react-icons/bs";
 
 const SideNav = () => {

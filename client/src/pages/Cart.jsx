@@ -7,39 +7,30 @@ import { useNavigate } from "react-router-dom";
 import { HiArrowRight } from "react-icons/hi";
 
 const Cart = () => {
-  const [cart] = useAppStore((state) => {
-    return [state.cart];
-  });
+  const { cart, user, getUserCart } = useAppStore();
+  useEffect(() => {
+    if (user) {
+      getUserCart();
+    }
+  }, [user]);
 
   const navigate = useNavigate();
-  const displayCartItems = cart?.map((item, id) => {
+  const displayCartItems = cart?.products?.map((item, id) => {
     return <CartCard item={item} key={id} />;
   });
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-
-  const totalDiscount = cart
-    ?.map((item) => {
-      return item.discountPercentage;
-    })
-    ?.reduce((a, b) => {
-      return a + b;
-    }, 0);
-
-  const totalAmount = cart
-    ?.map((item) => {
-      return item.qty * item.price;
-    })
-    ?.reduce((a, b) => {
-      return a + b;
-    }, 0);
+  // const totalAmount = cart
+  //   ?.map((item) => {
+  //     return item.qty * item.price;
+  //   })
+  //   ?.reduce((a, b) => {
+  //     return a + b;
+  //   }, 0);
 
   return (
     <>
       <Layout>
-        {cart?.length ? (
+        {cart?.products?.length ? (
           <div className="flex flex-col justify-between sm:flex-row">
             <div className="flex w-full flex-col justify-start gap-[10px] sm:w-[70%] sm:gap-[20px]">
               {displayCartItems}
@@ -48,12 +39,12 @@ const Cart = () => {
               <h1 className="p-[15px] text-[16px] font-[600] sm:text-[20px]">
                 Payment Details
               </h1>
-              <h2 className="p-[15px] text-[16px] font-medium sm:text-[20px]">
+              {/* <h2 className="p-[15px] text-[16px] font-medium sm:text-[20px]">
                 Discount = {Math.ceil(totalDiscount)}%
-              </h2>
-              <h1 className="p-[15px] text-[16px] font-[500]">
+              </h2> */}
+              {/* <h1 className="p-[15px] text-[16px] font-[500]">
                 Total amount = $ {Math.ceil(totalAmount)}
-              </h1>
+              </h1> */}
               <div className="w-full bg-slate-500 py-[15px] text-center text-[16px] font-[700]">
                 Confirm to checkout
               </div>

@@ -1,19 +1,29 @@
 const express = require("express");
 const {
-  getAllProducts,
-  bySingleProduct,
-  searchProducts,
-  byCategory,
-  trendingItems,
-  getAllCategoryNames,
-} = require("../controller/products");
+  createCategory,
+  addProduct,
+  getSingleProduct,
+  getAllProduct,
+  updateProduct,
+  deleteProduct,
+  updateCategory,
+  deleteCategory,
+  getAllCategory,
+  getByCategory,
+  getSingleProductEdit,
+  deleteProductImage,
+  getSingleCategory,
+} = require("../controller/productController");
+const { checkAuth, checkAdmin } = require("../middleware/auth");
+
 const productRoute = express.Router();
 
-productRoute.get("/", getAllProducts);
-productRoute.post("/", bySingleProduct);
-productRoute.get("/category", getAllCategoryNames);
-productRoute.post("/category", byCategory);
-productRoute.post("/search", searchProducts);
-productRoute.get("/trending", trendingItems);
+productRoute.get("/", getAllProduct);
+productRoute.put("/", [checkAuth, checkAdmin], updateProduct);
+productRoute.delete("/", [checkAuth, checkAdmin], deleteProduct);
+productRoute.delete("/image", [checkAuth, checkAdmin], deleteProductImage);
+productRoute.post("/add", [checkAuth, checkAdmin], addProduct);
+productRoute.post("/single", getSingleProduct);
+productRoute.post("/single-product", getSingleProductEdit);
 
 module.exports = productRoute;
