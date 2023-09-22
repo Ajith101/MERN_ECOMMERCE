@@ -52,6 +52,12 @@ const Login = () => {
           errors={errors}
           touched={touched}
         />
+        <h2
+          onClick={() => navigate("/forgot-password")}
+          className="cursor-pointer font-semibold text-slate-500 underline"
+        >
+          Forgot Password ?
+        </h2>
         <div className="py-5">
           <button
             type="submit"

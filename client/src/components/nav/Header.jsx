@@ -6,6 +6,9 @@ import { useNavigate } from "react-router-dom";
 import { useAppStore } from "../../utils/store/AppStore";
 import { RiShoppingCartFill } from "react-icons/ri";
 import { TbLayoutDashboard } from "react-icons/tb";
+import CartList from "../CartList";
+import { CgSearch } from "react-icons/cg";
+import LogOutMenu from "./LogOutMenu";
 
 export const CartNumber = () => {
   const { cartNo } = useAppStore();
@@ -23,10 +26,11 @@ export const CartNumber = () => {
 };
 
 const Header = () => {
+  const [userMenu, setUserMenu] = useState(false);
+  const [showCart, setShowCart] = useState(false);
   const [nav, setNav] = useState(false);
   const navigate = useNavigate();
-  const { addToCart, user, getCartNumbers, cartNo } = useAppStore();
-
+  const { addToCart, user, getCartNumbers, cartNo, isVisible } = useAppStore();
   useEffect(() => {
     if (user) {
       getCartNumbers();
@@ -42,29 +46,28 @@ const Header = () => {
           Shopping App
         </h1>
         <div className="hidden items-center justify-center gap-[15px] text-[20px] sm:flex">
-          <div className="relative" onClick={() => navigate("/cart")}>
-            <RiShoppingCartFill
-              className="transition-all ease-in-out hover:scale-110"
-              size={"20px"}
+          <div className="relative">
+            <BiSolidUser
+              onClick={() => setUserMenu((pre) => !pre)}
+              className="cursor-pointer transition-all ease-in-out hover:scale-110"
+              size={"24px"}
             />
-            <div className="absolute right-[-14px] top-[-10px] transition-all ease-in-out hover:scale-110">
-              <CartNumber cart={cartNo} />
-            </div>
+            <LogOutMenu userMenu={userMenu} setUserMenu={setUserMenu} />
           </div>
-          <BiSolidUser
-            className="transition-all ease-in-out hover:scale-110"
-            size={"24px"}
-          />
           {user?.role === "admin" ? (
             <TbLayoutDashboard
-              className="transition-all ease-in-out hover:scale-110"
+              className="cursor-pointer transition-all ease-in-out hover:scale-110"
               onClick={() => navigate("/admin/dashboard")}
             />
           ) : null}
         </div>
 
         <div className="flex items-center gap-[25px]">
-          <div className="relative sm:hidden" onClick={() => navigate("/cart")}>
+          {isVisible && <CgSearch size={"25px"} color="white" />}
+          <div
+            className="relative cursor-pointer"
+            onClick={() => setShowCart((pre) => !pre)}
+          >
             <RiShoppingCartFill size={"20px"} />
             <div className="absolute right-[-14px] top-[-10px]">
               <CartNumber />
@@ -83,6 +86,9 @@ const Header = () => {
         ) : null}
       </div>
       <MobileNav setNav={setNav} nav={nav} />
+      {showCart ? (
+        <CartList setShowCart={setShowCart} showCart={showCart} />
+      ) : null}
     </>
   );
 };

@@ -26,6 +26,28 @@ const getSingleProductEdit = async (req, res) => {
   }
 };
 
+const getProductsByCategory = asyncHandler(async (req, res) => {
+  const { name } = req.params;
+  const category = await categoryModel.findOne({
+    name: { $regex: name, $options: "i" },
+  });
+  if (!category) {
+    res.status(404);
+    throw new Error("Not found");
+  } else {
+    const products = await productModel
+      .find({ category: category._id })
+      .select("name category images price _id stock sold totalRatings")
+      .populate({ path: "category", select: "name -_id" });
+    if (!products) {
+      res.status(404);
+      throw new Error("Not found");
+    } else {
+      res.status(200).json(products);
+    }
+  }
+});
+
 const getAllProduct = asyncHandler(async (req, res) => {
   const allProduct = await productModel
     .find()
@@ -141,4 +163,5 @@ module.exports = {
   deleteProduct,
   getSingleProductEdit,
   deleteProductImage,
+  getProductsByCategory,
 };

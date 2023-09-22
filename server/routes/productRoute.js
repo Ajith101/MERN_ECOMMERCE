@@ -13,12 +13,14 @@ const {
   getSingleProductEdit,
   deleteProductImage,
   getSingleCategory,
+  getProductsByCategory,
 } = require("../controller/productController");
 const { checkAuth, checkAdmin } = require("../middleware/auth");
 
 const productRoute = express.Router();
 
 productRoute.get("/", getAllProduct);
+productRoute.get("/category/:name", getProductsByCategory);
 productRoute.put("/", [checkAuth, checkAdmin], updateProduct);
 productRoute.delete("/", [checkAuth, checkAdmin], deleteProduct);
 productRoute.delete("/image", [checkAuth, checkAdmin], deleteProductImage);

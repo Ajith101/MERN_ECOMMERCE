@@ -25,6 +25,9 @@ const errorHandler = (err, req, res, next) => {
   if (err.code == 11000) {
     message = `Duplicate ${Object.keys(err.keyvalue)} entered`;
   }
+  if (err.code == "EDNS") {
+    message = `Cant send mail`;
+  }
 
   if (err.name === "JsonWebTokenError") {
     message = `Json web token is invalid`;

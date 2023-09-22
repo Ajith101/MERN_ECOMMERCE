@@ -5,7 +5,7 @@ import { addProductSchema } from "../utils/schema";
 import { useAppStore } from "../utils/store/AppStore";
 import { IoIosCloseCircle } from "react-icons/io";
 import { BsCloudUploadFill } from "react-icons/bs";
-import { AiFillCloseCircle } from "react-icons/ai";
+import { AiFillCloseCircle, AiOutlineCloseCircle } from "react-icons/ai";
 import axios from "../utils/store/axios";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -21,7 +21,7 @@ const initialValues = {
   images: [],
   tags: [],
   color: [],
-  specifications: [],
+  specifications: [{ name: "", detail: "" }],
   brand: "",
   totalRatings: "1",
   sold: "",
@@ -156,6 +156,51 @@ const AddProduct = () => {
       getSingleProductEdit(id, setValues);
     }
   }, [id]);
+
+  const handleSpecificationsName = (e, item) => {
+    setValues((pre) => ({
+      ...pre,
+      specifications: [
+        ...pre.specifications.map((names) =>
+          names.name === item.name ? { ...names, name: e.target.value } : names
+        ),
+      ],
+    }));
+  };
+
+  const handleSpecificationsDetail = (e, item) => {
+    setValues((pre) => ({
+      ...pre,
+      specifications: [
+        ...pre.specifications.map((matched) =>
+          matched.name === item.name
+            ? { ...matched, detail: e.target.value }
+            : matched
+        ),
+      ],
+    }));
+  };
+
+  const addNewField = () => {
+    const validation = values?.specifications?.every(
+      (item) => item.name && item.detail
+    );
+    if (validation) {
+      setValues((pre) => ({
+        ...pre,
+        specifications: [...pre.specifications, { name: "", detail: "" }],
+      }));
+    }
+  };
+
+  const removeSpecifications = (item) => {
+    setValues((pre) => ({
+      ...pre,
+      specifications: [
+        ...pre.specifications.filter((spec) => spec.name !== item.name),
+      ],
+    }));
+  };
 
   return (
     <div className="my-10 flex min-h-screen w-full items-center justify-center">
@@ -340,6 +385,40 @@ const AddProduct = () => {
                 onMouseDown={handleTags}
                 className="outline-none"
               />
+            </div>
+            <div className="my-3">
+              <h2>Specifications</h2>
+              {values?.specifications?.length > 0 &&
+                values?.specifications?.map((item, id) => (
+                  <div key={id} className="mt-3 flex w-full items-center gap-3">
+                    <input
+                      type="text"
+                      name={item.name}
+                      value={item.name}
+                      onChange={(e) => handleSpecificationsName(e, item)}
+                      className="w-1/2 rounded-xl border-[1px] p-2 outline-none"
+                    />
+                    <input
+                      type="text"
+                      value={item.detail}
+                      onChange={(e) => handleSpecificationsDetail(e, item)}
+                      className="w-1/2 rounded-xl border-[1px] p-2 outline-none"
+                    />
+                    <AiOutlineCloseCircle
+                      onClick={() => removeSpecifications(item)}
+                      size={"25px"}
+                      color="red"
+                    />
+                  </div>
+                ))}
+              <div className="flex justify-end">
+                <span
+                  onClick={() => addNewField()}
+                  className="my-4 mt-2 cursor-pointer rounded-xl bg-blue-600 px-4 py-2 text-white"
+                >
+                  Add New Filed
+                </span>
+              </div>
             </div>
           </div>
           <button

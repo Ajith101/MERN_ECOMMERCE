@@ -13,13 +13,17 @@ export const useAppStore = create((set, get) => {
     isFetching: { products: false, category: false },
     allProducts: [],
     categorys: [],
+    categoryProducts: [],
     brands: [],
     cart: null,
     singleItem: null,
     trendingItems: [],
     errors: "",
     user: userExist ? JSON.parse(userExist) : null,
+    allUser: [],
     cartNo: null,
+    isVisible: false,
+    tempUser: null,
     getAllProducts: async () => {
       try {
         set((state) => ({
@@ -27,10 +31,41 @@ export const useAppStore = create((set, get) => {
           isFetching: { ...state.isFetching, products: true },
         }));
         const response = await axios(`/api/products/`);
-        set(() => ({ allProducts: response.data, loading: false }));
+        set((state) => ({
+          allProducts: response.data,
+          loading: false,
+          isFetching: { ...state.isFetching, products: false },
+        }));
       } catch (error) {
         toast.error(error.response.data.message);
-        set(() => ({ loading: false, errors: error.response.data.message }));
+        set(() => ({
+          loading: false,
+          errors: error.response.data.message,
+          isFetching: { ...state.isFetching, products: false },
+        }));
+      }
+    },
+    getByCategory: async (name) => {
+      try {
+        set((state) => ({
+          loading: true,
+          isFetching: { ...state.isFetching, products: true },
+        }));
+        const { data, status } = await axios(`api/products/category/${name}`);
+        if (status === 200) {
+          set((state) => ({
+            categoryProducts: data,
+            loading: false,
+            isFetching: { ...state.isFetching, products: false },
+          }));
+        }
+      } catch (error) {
+        toast.error(error.response.data.message);
+        set(() => ({
+          loading: false,
+          errors: error.response.data.message,
+          isFetching: { ...state.isFetching, products: false },
+        }));
       }
     },
     deleteProduct: async (id, setShowpopUp) => {
@@ -83,25 +118,36 @@ export const useAppStore = create((set, get) => {
         set(() => ({ loading: false, errors: error.response.data.message }));
       }
     },
-    getSingleProduct: async (id, setValues) => {
+    getSingleProduct: async (id) => {
       try {
-        set(() => ({ loading: true }));
-        const checkCartExist = get().cart.find((item) => item.id == id);
         const { data } = await axios(`/api/products/single/`, {
           method: "POST",
           data: { id },
         });
-        set(() => ({
-          singleItem: checkCartExist
-            ? { ...data, qty: checkCartExist.qty }
-            : data,
-          loading: false,
-        }));
-        setValues((pre) => ({ ...pre, ...data }));
+        set(() => ({ singleItem: data }));
       } catch (error) {
-        toast.error(error?.response?.data?.message);
-        set(() => ({ loading: false, errors: error?.response?.data?.message }));
+        toast.error(error.response.data.message);
+        set(() => ({ loading: false, errors: error.response.data.message }));
       }
+      // try {
+      //   set(() => ({ loading: true }));
+      //   const checkCartExist = get().cart.find((item) => item.id == id);
+      //   const { data } = await axios(`/api/products/single/`, {
+      //     method: "POST",
+      //     data: { id },
+      //   });
+      //   console.log(data);
+      //   set(() => ({
+      //     singleItem: checkCartExist
+      //       ? { ...data, qty: checkCartExist.qty }
+      //       : data,
+      //     loading: false,
+      //   }));
+      //   // setValues((pre) => ({ ...pre, ...data }));
+      // } catch (error) {
+      //   toast.error(error?.response?.data?.message);
+      //   set(() => ({ loading: false, errors: error?.response?.data?.message }));
+      // }
     },
     addProduct: async (values, navigate) => {
       try {
@@ -133,6 +179,7 @@ export const useAppStore = create((set, get) => {
           newImages: values.newImages,
           tags: values.tags,
           totalRatings: values.totalRatings,
+          specifications: values.specifications,
         };
         const { status } = await axios(`/api/products`, {
           method: "PUT",
@@ -186,12 +233,23 @@ export const useAppStore = create((set, get) => {
     },
     getCategoryNames: async () => {
       try {
-        set(() => ({ loading: true }));
-        const response = await axios(`/api/category`);
-        set(() => ({ categorys: response?.data, loading: false }));
+        set((state) => ({
+          loading: true,
+          isFetching: { ...state.isFetching, category: true },
+        }));
+        const { data } = await axios(`/api/category`);
+        set((state) => ({
+          categorys: data,
+          loading: false,
+          isFetching: { ...state.isFetching, category: false },
+        }));
       } catch (error) {
         toast.error(error.response.data.message);
-        set(() => ({ loading: false, errors: error.response.data.message }));
+        set(() => ({
+          loading: false,
+          errors: error.response.data.message,
+          isFetching: { ...state.isFetching, category: false },
+        }));
       }
     },
     addCart: (data) => {
@@ -288,7 +346,7 @@ export const useAppStore = create((set, get) => {
     },
     addQty: async (id) => {
       try {
-        set(() => ({ loading: true }));
+        // set(() => ({ loading: true }));
         const { status, data } = await axios(`/api/user/cart/add-qty`, {
           method: "PUT",
           data: {
@@ -315,7 +373,7 @@ export const useAppStore = create((set, get) => {
     },
     decreaseQty: async (id) => {
       try {
-        set(() => ({ loading: true }));
+        // set(() => ({ loading: true }));
         const { status, data } = await axios(`/api/user/cart/decrease-qty`, {
           method: "PUT",
           data: {
@@ -584,11 +642,76 @@ export const useAppStore = create((set, get) => {
         set(() => ({ loading: false, errors: error.response.data.message }));
       }
     },
+    getAllUsers: async () => {
+      try {
+        set(() => ({ loading: true }));
+        const { status, data } = await axios("/api/user");
+        if (status === 200) {
+          set((state) => ({ loading: false, allUser: data }));
+        }
+      } catch (error) {
+        toast.error(error.response.data.message);
+        set(() => ({ loading: false, errors: error.response.data.message }));
+      }
+    },
+    forgotPassword: async (values, navigate) => {
+      try {
+        set(() => ({ loading: true }));
+        const { data, status } = await axios("/api/user/forgot-password", {
+          method: "POST",
+          data: { email: values?.email },
+        });
+        if (status === 200) {
+          set(() => ({ loading: false, tempUser: values?.email }));
+          navigate("/forgot-password/confirm-otp");
+          toast.success(data.message);
+        }
+      } catch (error) {
+        set(() => ({ loading: false }));
+        toast.error(error.response.data.message);
+      }
+    },
+    confirmOTP: async (values, navigate) => {
+      const email = get().tempUser;
+      try {
+        set(() => ({ loading: true }));
+        const { data, status } = await axios("/api/user/confirm-otp", {
+          method: "POST",
+          data: { email, otp: values.otp },
+        });
+        if (status === 200) {
+          set(() => ({ loading: false }));
+          navigate("/forgot-password/new");
+          toast.success(data.message);
+        }
+      } catch (error) {
+        set(() => ({ loading: false }));
+        toast.error(error.response.data.message);
+      }
+    },
+    resetPassword: async (values, navigate) => {
+      const email = get().tempUser;
+      try {
+        set(() => ({ loading: true }));
+        const { data, status } = await axios("/api/user/reset-password", {
+          method: "POST",
+          data: { email, password: values.password },
+        });
+        if (status === 200) {
+          set(() => ({ loading: false, tempUser: null }));
+          navigate("/login");
+          toast.success(data.message);
+        }
+      } catch (error) {
+        set(() => ({ loading: false }));
+        toast.error(error.response.data.message);
+      }
+    },
     logOut: async (setNav, navigate) => {
       try {
         const { status } = await axios("/api/user/logout", { method: "POST" });
         if (status === 200) {
-          setNav(false);
+          setNav && setNav(false);
           navigate("/");
           toast.success("Logout successfully");
           set(() => ({ user: null, cart: null, cartNo: null }));
@@ -598,6 +721,9 @@ export const useAppStore = create((set, get) => {
         toast.error(error.response.data.message);
         set(() => ({ loading: false, errors: error.response.data.message }));
       }
+    },
+    toggleVisible: (value) => {
+      set(() => ({ isVisible: value }));
     },
   };
 });

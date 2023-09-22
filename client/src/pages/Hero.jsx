@@ -5,11 +5,16 @@ import { useAppStore } from "../utils/store/AppStore";
 import ProductCard from "./../components/ProductCard";
 import ProductLoader from "../components/loader/ProductLoader";
 import CategoryLoader from "../components/loader/CategoryLoader";
+import { useNavigate } from "react-router-dom";
 
 const CategoryCards = ({ item }) => {
+  const navigate = useNavigate();
   return (
     <>
-      <div className="flex h-[120px] w-full flex-col bg-gray-200 p-2 md:h-[150px]">
+      <div
+        onClick={() => navigate(`/cat-product/${item?.name}`)}
+        className="flex h-[120px] w-full flex-col bg-gray-200 p-2 md:h-[150px]"
+      >
         <img
           src={item?.image?.url}
           className="h-full w-full object-contain"
@@ -23,10 +28,29 @@ const CategoryCards = ({ item }) => {
 const Hero = () => {
   const [currentCategory, setCurrentCategory] = useState(null);
   const [byCategory, setByCategory] = useState(null);
-  const { loading, categorys, isFetching, getAllProducts, allProducts } =
-    useAppStore();
+  const {
+    loading,
+    categorys,
+    isFetching,
+    getAllProducts,
+    allProducts,
+    toggleVisible,
+  } = useAppStore();
   useEffect(() => {
     getAllProducts();
+  }, []);
+  const toggleSearchIcon = () => {
+    let y = window.scrollY;
+    if (y > 320) {
+      toggleVisible(true);
+    } else {
+      toggleVisible(false);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener("scroll", toggleSearchIcon);
+    return () => window.removeEventListener("scroll", toggleSearchIcon);
   }, []);
 
   const displayProducts =

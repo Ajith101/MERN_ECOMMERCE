@@ -11,3 +11,6 @@ export { default as Category } from "./Category";
 export { default as Products } from "./Products";
 export { default as DashboardPage } from "./DashboardPage";
 export { default as ByCategory } from "./ByCategory";
+export { default as ForgotPassword } from "./forgotPassword";
+export { default as VerifyOTP } from "./forgotPassword/VerifyOTP";
+export { default as PasswordReset } from "./forgotPassword/PasswordReset";

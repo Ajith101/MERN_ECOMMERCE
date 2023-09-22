@@ -14,6 +14,8 @@ const userSchema = new mongoose.Schema({
   passwordResetToken: { type: String },
   passwordResetExpires: { type: String },
   address: { type: String },
+  otp: { type: String },
+  isVerified: { type: Boolean, default: false },
 });
 
 userSchema.pre("save", async function (next) {

@@ -7,6 +7,11 @@ const {
 } = require("../services/authServices");
 const cartModel = require("../models/cartModel");
 const mongoose = require("mongoose");
+const productModel = require("../models/productModel");
+const categoryModel = require("../models/categoryModel");
+const brandModel = require("../models/brandModel");
+const sendMail = require("../utils/sendMail");
+const bcrypt = require("bcrypt");
 
 const loginUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
@@ -37,11 +42,11 @@ const loginUser = asyncHandler(async (req, res) => {
       });
     } else {
       res.status(404);
-      throw new Error("password not match");
+      throw new Error("Invalid credential");
     }
   } else {
     res.status(404);
-    throw new Error("email not valid");
+    throw new Error("Invalid credential");
   }
 });
 
@@ -51,7 +56,31 @@ const registerUser = asyncHandler(async (req, res) => {
   if (!isExist) {
     const newUser = await userModel.create(req.body);
     const token = createToken({ userId: newUser._id });
-    res.status(200).json({ user: newUser, token });
+    const refreshToken = generateRefreshToken({ userId: newUser._id });
+    const otp = `${Math.floor(1000 + Math.random() * 999999)}`;
+    const hashOtp = await bcrypt.hash(otp, 10);
+    const updatedUser = await userModel.findOneAndUpdate(
+      { email },
+      { $set: { otp: hashOtp, refreshToken } },
+      { new: true }
+    );
+    res
+      .cookie("refreshToken", refreshToken, {
+        httpOnly: true,
+        secure: true,
+        sameSite: "none",
+        maxAge: 72 * 60 * 60 * 1000,
+      })
+      .status(200)
+      .json({
+        otp,
+        user: {
+          name: updatedUser.name,
+          cart: updatedUser.cart,
+          role: updatedUser.role,
+        },
+        token,
+      });
   } else {
     res.status(400);
     throw new Error("User is already exist");
@@ -90,6 +119,58 @@ const logout = asyncHandler(async (req, res) => {
   res.status(200).json({ message: "Logout successfully" });
 });
 
+const forgotPassword = asyncHandler(async (req, res) => {
+  const { email } = req.body;
+  const isExist = await userModel.findOne({ email });
+  if (!isExist) {
+    res.status(404);
+    throw new Error("Invalid mail");
+  } else {
+    const otp = `${Math.floor(1000 + Math.random() * 999999)}`;
+    const hashOtp = await bcrypt.hash(otp, 10);
+    await userModel.updateOne({ email }, { $set: { otp: hashOtp } });
+    res.status(200).json({ otp });
+    // sendMail(email, "forgotPassword", res);
+  }
+});
+
+const confirmOtp = asyncHandler(async (req, res) => {
+  const { email, otp } = req.body;
+  const isExist = await userModel.findOne({ email });
+  if (isExist) {
+    const verifyOtp = await bcrypt.compare(otp.toString(), isExist.otp);
+    if (verifyOtp) {
+      isExist.otp = "";
+      await isExist.save();
+      res.status(200).json({ message: "OTP verified" });
+    } else {
+      res.status(400);
+      throw new Error("Wrong otp");
+    }
+  } else {
+    res.status(404);
+    throw new Error("Invalid mail");
+  }
+});
+
+const reSetPassword = asyncHandler(async (req, res) => {
+  const { email, password } = req.body;
+  const isExist = await userModel.findOne({ email });
+  if (isExist) {
+    isExist.password = password;
+    await isExist.save();
+    res.status(200).json({ message: "Password changed successful" });
+  } else {
+    res.status(404);
+    throw new Error("Invalid mail");
+  }
+});
+
+const getAllUsers = asyncHandler(async (req, res) => {
+  const users = await userModel.find().select("name email role isBlocked");
+  res.status(200).json(users);
+});
+
 const getSingleUser = asyncHandler(async (req, res) => {
   const { id } = req.body;
   const isExist = await userModel.findOne({ _id: id });
@@ -99,11 +180,6 @@ const getSingleUser = asyncHandler(async (req, res) => {
     res.status(404);
     throw new Error("user not found");
   }
-});
-
-const addToCart = asyncHandler(async (req, res) => {
-  const { userId, productId } = req.body;
-  const cart = await cartModel.findOne({ orderedBy: userId });
 });
 
 const getCartNumber = asyncHandler(async (req, res) => {
@@ -241,6 +317,15 @@ const removeCart = asyncHandler(async (req, res) => {
   }
 });
 
+const adminList = asyncHandler(async (req, res) => {
+  const allProducts = await productModel.find().countDocuments();
+  const allUser = await userModel.find().countDocuments();
+  const allCategory = await categoryModel.find().countDocuments();
+  const allBrands = await brandModel.find().countDocuments();
+
+  res.status(200).json({ allProducts, allBrands, allCategory, allUser });
+});
+
 module.exports = {
   loginUser,
   registerUser,
@@ -253,4 +338,9 @@ module.exports = {
   removeCart,
   getCartNumber,
   logout,
+  adminList,
+  getAllUsers,
+  forgotPassword,
+  confirmOtp,
+  reSetPassword,
 };

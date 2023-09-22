@@ -14,13 +14,17 @@ import {
   Category,
   AddCategory,
   DashboardPage,
+  ByCategory,
+  ForgotPassword,
+  VerifyOTP,
+  PasswordReset,
 } from "../pages/";
 import SingleProduct from "../pages/SingleProduct";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import DashBoardWrapper from "../components/DashBoardWrapper";
 import AddBrand from "../pages/AddBrand";
-import { useEffect, useMemo } from "react";
+import { useEffect } from "react";
 import { useAppStore } from "../utils/store/AppStore";
 import Brands from "../pages/Brands";
 
@@ -78,12 +82,28 @@ export const appRouter = createBrowserRouter([
         element: <SingleProduct />,
       },
       {
+        path: "/cat-product/:name",
+        element: <ByCategory />,
+      },
+      {
         path: "/login",
         element: <Login />,
       },
       {
         path: "/register",
         element: <Register />,
+      },
+      {
+        path: "/forgot-password",
+        element: <ForgotPassword />,
+      },
+      {
+        path: "/forgot-password/confirm-otp",
+        element: <VerifyOTP />,
+      },
+      {
+        path: "/forgot-password/new",
+        element: <PasswordReset />,
       },
       {
         path: "",

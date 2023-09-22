@@ -84,3 +84,19 @@ export const editCategorySchema = YUP.object({
     }
   }),
 });
+
+export const forgotPasswordSchema = YUP.object({
+  email: YUP.string()
+    .min(3, "minimum 3 character")
+    .email("invalid mail")
+    .required("Enter mail"),
+});
+export const verifyOtpSchema = YUP.object({
+  otp: YUP.number().required("Enter OTP"),
+});
+export const confirmPasswordSchema = YUP.object({
+  password: YUP.string().required("Enter Password"),
+  c_password: YUP.string()
+    .required("Enter Password")
+    .oneOf([YUP.ref("password"), null], "Password must be match"),
+});

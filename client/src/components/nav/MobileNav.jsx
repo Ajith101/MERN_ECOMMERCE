@@ -10,6 +10,7 @@ import { BiLogoFacebookSquare, BiSolidConversation } from "react-icons/bi";
 import { useAppStore } from "../../utils/store/AppStore";
 import { TbBoxModel, TbCategory, TbLayoutDashboard } from "react-icons/tb";
 import { IoMdLogOut } from "react-icons/io";
+import useOuterClick from "../../../hooks/outSideClick";
 
 export const navLinks = [
   { name: "Home", to: "/", icon: <AiFillHome size={"18px"} /> },
@@ -44,16 +45,7 @@ const MobileNav = ({ setNav, nav }) => {
   const currentPath = pathname.split("/")[1];
   const { cart, logOut, user } = useAppStore();
   const navRef = useRef();
-  useEffect(() => {
-    const closeNav = (event) => {
-      if (!navRef.current.contains(event.target)) {
-        setNav((pre) => (pre = false));
-      }
-    };
-    document.addEventListener("mousedown", closeNav);
-    return () => document.removeEventListener("mousedown", closeNav);
-  }, []);
-
+  useOuterClick(navRef, setNav);
   const socialIcons = [
     {
       link: "https://www.facebook.com",
