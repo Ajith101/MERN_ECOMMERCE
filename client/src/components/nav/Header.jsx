@@ -30,7 +30,8 @@ const Header = () => {
   const [showCart, setShowCart] = useState(false);
   const [nav, setNav] = useState(false);
   const navigate = useNavigate();
-  const { addToCart, user, getCartNumbers, cartNo, isVisible } = useAppStore();
+  const { addToCart, user, getCartNumbers, cartNo, isVisible, toggleVisible } =
+    useAppStore();
   useEffect(() => {
     if (user) {
       getCartNumbers();
@@ -63,7 +64,14 @@ const Header = () => {
         </div>
 
         <div className="flex items-center gap-[25px]">
-          {isVisible && <CgSearch size={"25px"} color="white" />}
+          <CgSearch
+            onClick={() => {
+              navigate("/search");
+            }}
+            size={"25px"}
+            color="white"
+          />
+
           <div
             className="relative cursor-pointer"
             onClick={() => setShowCart((pre) => !pre)}

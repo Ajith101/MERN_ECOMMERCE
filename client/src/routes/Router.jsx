@@ -18,6 +18,8 @@ import {
   ForgotPassword,
   VerifyOTP,
   PasswordReset,
+  VerifyRegister,
+  Search,
 } from "../pages/";
 import SingleProduct from "../pages/SingleProduct";
 import { ToastContainer } from "react-toastify";
@@ -27,6 +29,7 @@ import AddBrand from "../pages/AddBrand";
 import { useEffect } from "react";
 import { useAppStore } from "../utils/store/AppStore";
 import Brands from "../pages/Brands";
+import SingleProductLoader from "../components/loader/SingleProductLoader";
 
 const AppLayout = () => {
   const location = useLocation();
@@ -86,6 +89,10 @@ export const appRouter = createBrowserRouter([
         element: <ByCategory />,
       },
       {
+        path: "/brand-product/:name",
+        element: <ByCategory />,
+      },
+      {
         path: "/login",
         element: <Login />,
       },
@@ -102,8 +109,16 @@ export const appRouter = createBrowserRouter([
         element: <VerifyOTP />,
       },
       {
+        path: "/user/verify",
+        element: <VerifyRegister />,
+      },
+      {
         path: "/forgot-password/new",
         element: <PasswordReset />,
+      },
+      {
+        path: "/si",
+        element: <SingleProductLoader />,
       },
       {
         path: "",
@@ -157,5 +172,9 @@ export const appRouter = createBrowserRouter([
         ],
       },
     ],
+  },
+  {
+    path: "/search",
+    element: <Search />,
   },
 ]);

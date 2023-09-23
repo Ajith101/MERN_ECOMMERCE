@@ -1,13 +1,14 @@
 const categoryModel = require("../models/categoryModel");
 const productModel = require("../models/productModel");
-const validateID = require("../utils/validateMongoID");
-const cloudinary = require("cloudinary");
 const asyncHandler = require("../middleware/asyncHandler");
-const cartModel = require("../models/cartModel");
+const cloudinary = require("cloudinary");
 
 const getSingleProduct = asyncHandler(async (req, res) => {
   const { id } = req.body;
-  const isExist = await productModel.findById(id).populate("category", "name");
+  const isExist = await productModel.findById(id).populate([
+    { path: "category", select: "name -_id" },
+    { path: "brand", select: "name -_id" },
+  ]);
   if (isExist) {
     res.status(200).json(isExist);
   } else {
@@ -46,6 +47,17 @@ const getProductsByCategory = asyncHandler(async (req, res) => {
       res.status(200).json(products);
     }
   }
+});
+
+const searchProduct = asyncHandler(async (req, res) => {
+  const { value } = req.body;
+  const products = await productModel
+    .find({
+      name: { $regex: value, $options: "i" },
+    })
+    .populate({ path: "category", select: "name -_id" })
+    .select("name category images");
+  res.status(200).json(products);
 });
 
 const getAllProduct = asyncHandler(async (req, res) => {
@@ -164,4 +176,5 @@ module.exports = {
   getSingleProductEdit,
   deleteProductImage,
   getProductsByCategory,
+  searchProduct,
 };

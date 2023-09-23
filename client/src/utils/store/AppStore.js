@@ -10,10 +10,16 @@ const cartList = itemExist ? JSON.parse(itemExist) : [];
 export const useAppStore = create((set, get) => {
   return {
     loading: false,
-    isFetching: { products: false, category: false },
+    isFetching: {
+      products: false,
+      category: false,
+      singleProduct: false,
+      brands: false,
+    },
     allProducts: [],
     categorys: [],
     categoryProducts: [],
+    searchResults: [],
     brands: [],
     cart: null,
     singleItem: null,
@@ -22,7 +28,7 @@ export const useAppStore = create((set, get) => {
     user: userExist ? JSON.parse(userExist) : null,
     allUser: [],
     cartNo: null,
-    isVisible: false,
+    isVisible: true,
     tempUser: null,
     getAllProducts: async () => {
       try {
@@ -45,18 +51,74 @@ export const useAppStore = create((set, get) => {
         }));
       }
     },
-    getByCategory: async (name) => {
+    getAllBrands: async () => {
+      try {
+        set((state) => ({
+          loading: true,
+          isFetching: { ...state.isFetching, brands: true },
+        }));
+        const { data } = await axios(`/api/brand`);
+        set((state) => ({
+          brands: data,
+          loading: false,
+          isFetching: { ...state.isFetching, brands: false },
+        }));
+      } catch (error) {
+        toast.error(error.response.data.message);
+        set((state) => ({
+          loading: false,
+          errors: error.response.data.message,
+          isFetching: { ...state.isFetching, brands: false },
+        }));
+      }
+    },
+    getByCategory: async (name, currentPath) => {
       try {
         set((state) => ({
           loading: true,
           isFetching: { ...state.isFetching, products: true },
         }));
-        const { data, status } = await axios(`api/products/category/${name}`);
+        if (currentPath === "cat-product") {
+          const { data, status } = await axios(`api/products/category/${name}`);
+          if (status === 200) {
+            set((state) => ({
+              categoryProducts: data,
+              loading: false,
+              isFetching: { ...state.isFetching, products: false },
+            }));
+          }
+        } else if (currentPath === "brand-product") {
+          const { data, status } = await axios(`api/brand/name/${name}`);
+          if (status === 200) {
+            set((state) => ({
+              categoryProducts: data,
+              loading: false,
+              isFetching: { ...state.isFetching, products: false },
+            }));
+          }
+        }
+      } catch (error) {
+        toast.error(error.response.data.message);
+        set((state) => ({
+          loading: false,
+          errors: error.response.data.message,
+          isFetching: { ...state.isFetching, products: false },
+        }));
+      }
+    },
+    searchProducts: async (value) => {
+      try {
+        set(() => ({
+          loading: true,
+        }));
+        const { data, status } = await axios(`api/products/search`, {
+          method: "POST",
+          data: { value },
+        });
         if (status === 200) {
-          set((state) => ({
-            categoryProducts: data,
+          set(() => ({
+            searchResults: data,
             loading: false,
-            isFetching: { ...state.isFetching, products: false },
           }));
         }
       } catch (error) {
@@ -64,7 +126,6 @@ export const useAppStore = create((set, get) => {
         set(() => ({
           loading: false,
           errors: error.response.data.message,
-          isFetching: { ...state.isFetching, products: false },
         }));
       }
     },
@@ -102,32 +163,56 @@ export const useAppStore = create((set, get) => {
     },
     getSingleProductEdit: async (id, setValues) => {
       try {
-        set(() => ({ loading: true }));
-        // const checkCartExist = get().cart.find((item) => item.id == id);
+        set((state) => ({
+          loading: true,
+          isFetching: { ...state.isFetching, singleProduct: true },
+        }));
         const { data } = await axios(`/api/products/single-product`, {
           method: "POST",
           data: { id },
         });
-        set(() => ({
+        set((state) => ({
           singleItem: data,
           loading: false,
+          isFetching: { ...state.isFetching, singleProduct: false },
         }));
         setValues((pre) => ({ ...pre, ...data }));
       } catch (error) {
         toast.error(error.response.data.message);
-        set(() => ({ loading: false, errors: error.response.data.message }));
+        set((state) => ({
+          loading: false,
+          errors: error.response.data.message,
+          isFetching: { ...state.isFetching, singleProduct: false },
+        }));
       }
     },
     getSingleProduct: async (id) => {
       try {
-        const { data } = await axios(`/api/products/single/`, {
+        set((state) => ({
+          loading: true,
+          isFetching: { ...state.isFetching, singleProduct: true },
+        }));
+        const { data, status } = await axios(`/api/products/single/`, {
           method: "POST",
           data: { id },
         });
-        set(() => ({ singleItem: data }));
+        if (status === 200) {
+          set((state) => ({
+            singleItem: data,
+            loading: false,
+            isFetching: {
+              ...state.isFetching,
+              singleProduct: false,
+            },
+          }));
+        }
       } catch (error) {
         toast.error(error.response.data.message);
-        set(() => ({ loading: false, errors: error.response.data.message }));
+        set((state) => ({
+          loading: false,
+          errors: error.response.data.message,
+          isFetching: { ...state.isFetching, singleProduct: false },
+        }));
       }
       // try {
       //   set(() => ({ loading: true }));
@@ -180,6 +265,7 @@ export const useAppStore = create((set, get) => {
           tags: values.tags,
           totalRatings: values.totalRatings,
           specifications: values.specifications,
+          brand: values.brand,
         };
         const { status } = await axios(`/api/products`, {
           method: "PUT",
@@ -610,11 +696,8 @@ export const useAppStore = create((set, get) => {
           },
         });
         if (status == 200) {
-          toast.success("Registered successfully");
-          localStorage.setItem("user", JSON.stringify(data.user));
-          localStorage.setItem("token", JSON.stringify(data.token));
-          navigate("/");
-          set(() => ({ user: data.user, loading: false }));
+          navigate("/user/verify");
+          set(() => ({ loading: false, tempUser: values.email }));
         }
       } catch (error) {
         toast.error(error.response.data.message);
@@ -630,6 +713,10 @@ export const useAppStore = create((set, get) => {
             ...values,
           },
         });
+        if (status === 201) {
+          set(() => ({ tempUser: values.email, loading: false }));
+          navigate("/user/verify");
+        }
         if (status === 200) {
           set(() => ({ user: data.user, loading: false }));
           navigate("/");
@@ -682,6 +769,42 @@ export const useAppStore = create((set, get) => {
         if (status === 200) {
           set(() => ({ loading: false }));
           navigate("/forgot-password/new");
+          toast.success(data.message);
+        }
+      } catch (error) {
+        set(() => ({ loading: false }));
+        toast.error(error.response.data.message);
+      }
+    },
+    getNewOtp: async () => {
+      const email = get().tempUser;
+      try {
+        set(() => ({ loading: true }));
+        const { data, status } = await axios("/api/user/new-otp", {
+          method: "POST",
+          data: { email },
+        });
+        if (status === 200) {
+          console.log(data);
+          set(() => ({ loading: false }));
+          toast.success(data.message);
+        }
+      } catch (error) {
+        set(() => ({ loading: false }));
+        toast.error(error.response.data.message);
+      }
+    },
+    verifyUser: async (values, navigate) => {
+      const email = get().tempUser;
+      try {
+        set(() => ({ loading: true }));
+        const { data, status } = await axios("/api/user/verify-user", {
+          method: "POST",
+          data: { email, otp: values.otp },
+        });
+        if (status === 200) {
+          set(() => ({ loading: false, tempUser: null }));
+          navigate("/login");
           toast.success(data.message);
         }
       } catch (error) {

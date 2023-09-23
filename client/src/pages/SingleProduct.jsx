@@ -7,6 +7,7 @@ import PageNotFound from "./PageNotFound";
 import Swipper from "../components/Swipper";
 import { TbTruckDelivery } from "react-icons/tb";
 import { MdOutlineAssignment } from "react-icons/md";
+import SingleProductLoader from "../components/loader/SingleProductLoader";
 
 const SingleProduct = () => {
   const [imagePreview, setImagePreview] = useState(null);
@@ -18,6 +19,7 @@ const SingleProduct = () => {
     decreaseQtys,
     loading,
     errors,
+    isFetching,
   } = useAppStore();
   const { id } = useParams();
 
@@ -29,8 +31,8 @@ const SingleProduct = () => {
 
   return (
     <Layout>
-      {loading ? (
-        <span className="loader"></span>
+      {isFetching?.singleProduct ? (
+        <SingleProductLoader />
       ) : singleItem ? (
         <>
           <div className="flex w-full flex-col gap-[25px] sm:flex-row">
@@ -124,7 +126,9 @@ const SingleProduct = () => {
               <h2 className="font-semibold">General</h2>
               <div className="mt-2 flex items-center gap-3 rounded-md bg-white p-3">
                 <p className="w-1/2">Brand</p>
-                <span className="w-1/2 text-gray-500">{singleItem?.brand}</span>
+                <span className="w-1/2 text-gray-500">
+                  {singleItem?.brand?.name}
+                </span>
               </div>
               <div className="mt-2 flex items-center gap-3 rounded-md bg-white p-3">
                 <p className="w-1/2">Category</p>

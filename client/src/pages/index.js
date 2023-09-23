@@ -14,3 +14,5 @@ export { default as ByCategory } from "./ByCategory";
 export { default as ForgotPassword } from "./forgotPassword";
 export { default as VerifyOTP } from "./forgotPassword/VerifyOTP";
 export { default as PasswordReset } from "./forgotPassword/PasswordReset";
+export { default as VerifyRegister } from "./VerifyRegister";
+export { default as Search } from "./Search";

@@ -4,20 +4,21 @@ import { useNavigate, Navigate } from "react-router-dom";
 import { useAppStore } from "../utils/store/AppStore";
 import { InputForm } from "../components/form/InputForm";
 import { verifyOtpSchema } from "../utils/schema";
+import axios from "axios";
 
 const initialValues = {
   otp: "",
 };
 
 const VerifyRegister = () => {
-  const { confirmOTP, tempUser } = useAppStore();
+  const { verifyUser, tempUser, getNewOtp } = useAppStore();
   const navigate = useNavigate();
   const { handleBlur, handleChange, handleSubmit, values, errors, touched } =
     useFormik({
       initialValues,
       validationSchema: verifyOtpSchema,
       onSubmit: async (values, action) => {
-        confirmOTP(values, navigate);
+        verifyUser(values, navigate);
       },
     });
 
@@ -42,6 +43,12 @@ const VerifyRegister = () => {
               errors={errors}
               touched={touched}
             />
+            <h2
+              onClick={() => getNewOtp()}
+              className="cursor-pointer text-right font-semibold text-slate-500 underline"
+            >
+              New Otp
+            </h2>
             <div className="py-5">
               <button
                 type="submit"

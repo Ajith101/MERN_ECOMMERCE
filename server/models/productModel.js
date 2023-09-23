@@ -22,7 +22,7 @@ const productSchema = new mongoose.Schema(
     ],
     tags: { type: Array, default: [] },
     color: { type: Array, default: [] },
-    brand: { type: String },
+    brand: { type: mongoose.Types.ObjectId, ref: "brands", required: true },
     totalRatings: { type: Number, default: 0 },
     sold: { type: Number, default: 0 },
     questions: [

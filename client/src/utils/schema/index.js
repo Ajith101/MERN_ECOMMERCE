@@ -33,6 +33,7 @@ export const addProductSchema = YUP.object({
     .min(1, "Minimum 1 character required")
     .required("Enter Stock"),
   category: YUP.string().required("category required"),
+  brand: YUP.string().required("brand required"),
   size: YUP.array(),
   images: YUP.array(),
   // images: YUP.array()
@@ -42,7 +43,6 @@ export const addProductSchema = YUP.object({
   tags: YUP.array(),
   color: YUP.array(),
   specifications: YUP.array(),
-  brand: YUP.string(),
   // brand: YUP.string().required("Enter brand"),
   totalRatings: YUP.number(),
   // totalRatings: YUP.number().required("rating required"),

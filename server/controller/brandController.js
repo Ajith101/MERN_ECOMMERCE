@@ -1,9 +1,42 @@
 const cloudinary = require("cloudinary");
 const brandModel = require("../models/brandModel");
 const asyncHandler = require("../middleware/asyncHandler");
+const productModel = require("../models/productModel");
 
 const allBrands = asyncHandler(async (req, res) => {
   const isExist = await brandModel.find();
+  if (!isExist) {
+    res.status(404);
+    throw new Error("Not Found");
+  } else {
+    res.status(200).json(isExist);
+  }
+});
+
+const getProductsByBrand = asyncHandler(async (req, res) => {
+  const { name } = req.params;
+  const brand = await brandModel.findOne({
+    name: { $regex: name, $options: "i" },
+  });
+  if (!brand) {
+    res.status(404);
+    throw new Error("Not found");
+  } else {
+    const products = await productModel
+      .find({ brand: brand._id })
+      .select("name category images price _id stock sold totalRatings")
+      .populate({ path: "category", select: "name -_id" });
+    if (!products) {
+      res.status(404);
+      throw new Error("Not found");
+    } else {
+      res.status(200).json(products);
+    }
+  }
+});
+
+const allBrandsForAdmin = asyncHandler(async (req, res) => {
+  const isExist = await brandModel.find().select("name");
   if (!isExist) {
     res.status(404);
     throw new Error("Not Found");
@@ -83,4 +116,6 @@ module.exports = {
   allBrands,
   updateBrand,
   singleBrand,
+  allBrandsForAdmin,
+  getProductsByBrand,
 };

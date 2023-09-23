@@ -8,6 +8,7 @@ import { BsCloudUploadFill } from "react-icons/bs";
 import { AiFillCloseCircle, AiOutlineCloseCircle } from "react-icons/ai";
 import axios from "../utils/store/axios";
 import { useNavigate, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const initialValues = {
   name: "",
@@ -17,12 +18,12 @@ const initialValues = {
   price: "",
   stock: "",
   category: "",
+  brand: "",
   size: [],
   images: [],
   tags: [],
   color: [],
   specifications: [{ name: "", detail: "" }],
-  brand: "",
   totalRatings: "1",
   sold: "",
 };
@@ -30,6 +31,7 @@ const initialValues = {
 const AddProduct = () => {
   const navigate = useNavigate();
   const { id } = useParams();
+  const [allBrands, setAllBrands] = useState([]);
   const [newImages, setNewImages] = useState([]);
   const [tags, setTags] = useState("");
   const fileRef = useRef(null);
@@ -127,15 +129,6 @@ const AddProduct = () => {
     },
   ];
 
-  const getAllBrand = async () => {
-    try {
-      const { data } = await axios("/api/brand");
-      console.log(data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   const handleTags = (e) => {
     const { value } = e.target;
     if (value) {
@@ -151,11 +144,24 @@ const AddProduct = () => {
     }));
   };
 
+  const getAllBrandNames = async () => {
+    try {
+      const { data } = await axios("/api/brand/names");
+      setAllBrands(data);
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
+  };
+
   useEffect(() => {
     if (id) {
       getSingleProductEdit(id, setValues);
     }
   }, [id]);
+
+  useEffect(() => {
+    getAllBrandNames();
+  }, []);
 
   const handleSpecificationsName = (e, item) => {
     setValues((pre) => ({
@@ -265,6 +271,31 @@ const AddProduct = () => {
             >
               <option value="">Select</option>
               {categorys?.map((item, id) => {
+                return (
+                  <option key={id} value={item._id}>
+                    {item.name}
+                  </option>
+                );
+              })}
+            </select>
+          </div>
+          <div className="flex flex-col pb-4">
+            <label htmlFor="brand" className="text-gray-500">
+              Brand
+            </label>
+            {errors.brand && touched.brand ? (
+              <span className="text-[14px] text-red-600">{errors.brand}</span>
+            ) : null}
+            <select
+              onChange={handleChange}
+              onBlur={handleBlur}
+              name="brand"
+              id="brand"
+              value={values?.brand}
+              className="w-full rounded-xl border-[1px] p-2 outline-none"
+            >
+              <option value="">Select</option>
+              {allBrands?.map((item, id) => {
                 return (
                   <option key={id} value={item._id}>
                     {item.name}

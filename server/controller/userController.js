@@ -19,6 +19,9 @@ const loginUser = asyncHandler(async (req, res) => {
   if (isExist) {
     const checkPassword = await comparePassword(password, isExist.password);
     if (checkPassword) {
+      if (isExist.isVerified === false) {
+        res.status(201).json({ message: "not verified" });
+      }
       const token = createToken({ userId: isExist._id });
       const refreshToken = generateRefreshToken({ userId: isExist._id });
       const updatedUser = await userModel.findOneAndUpdate(
@@ -50,37 +53,53 @@ const loginUser = asyncHandler(async (req, res) => {
   }
 });
 
+const verifyUser = asyncHandler(async (req, res) => {
+  const { email, otp } = req.body;
+  const isExist = await userModel.findOne({ email });
+  if (isExist) {
+    const checkOtp = await bcrypt.compare(otp.toString(), isExist.otp);
+    if (checkOtp) {
+      await userModel.findOneAndUpdate(
+        { email },
+        { $set: { isVerified: true, otp: "" } }
+      );
+      res.status(200).json({ message: "OTP verified" });
+    } else {
+      res.status(400);
+      throw new Error("Invalid otp");
+    }
+  } else {
+    res.status(400);
+    throw new Error("Invalid mail");
+  }
+});
+
+const getNewOtp = asyncHandler(async (req, res) => {
+  const { email } = req.body;
+  const isExist = await userModel.findOne({ email });
+  if (!isExist) {
+    res.status(404);
+    throw new Error("invalid mail");
+  } else {
+    const otp = `${Math.floor(1000 + Math.random() * 999999)}`;
+    const hashOtp = await bcrypt.hash(otp, 10);
+    await userModel.updateOne({ email }, { $set: { otp: hashOtp } });
+    res.status(200).json({ otp });
+    // sendMail(email, "forgotPassword", res);
+  }
+});
+
 const registerUser = asyncHandler(async (req, res) => {
   const { email } = req.body;
   const isExist = await userModel.findOne({ email });
   if (!isExist) {
-    const newUser = await userModel.create(req.body);
-    const token = createToken({ userId: newUser._id });
-    const refreshToken = generateRefreshToken({ userId: newUser._id });
     const otp = `${Math.floor(1000 + Math.random() * 999999)}`;
     const hashOtp = await bcrypt.hash(otp, 10);
-    const updatedUser = await userModel.findOneAndUpdate(
-      { email },
-      { $set: { otp: hashOtp, refreshToken } },
-      { new: true }
-    );
-    res
-      .cookie("refreshToken", refreshToken, {
-        httpOnly: true,
-        secure: true,
-        sameSite: "none",
-        maxAge: 72 * 60 * 60 * 1000,
-      })
-      .status(200)
-      .json({
-        otp,
-        user: {
-          name: updatedUser.name,
-          cart: updatedUser.cart,
-          role: updatedUser.role,
-        },
-        token,
-      });
+    const newUser = new userModel({ ...req.body, otp: hashOtp });
+    await newUser.save();
+    res.status(200).json({
+      otp,
+    });
   } else {
     res.status(400);
     throw new Error("User is already exist");
@@ -343,4 +362,6 @@ module.exports = {
   forgotPassword,
   confirmOtp,
   reSetPassword,
+  verifyUser,
+  getNewOtp,
 };
