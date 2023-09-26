@@ -21,9 +21,9 @@ const PORT = process.env.PORT | 2040;
 app.use(fileUpload());
 app.use(
   cors({
-    origin: `${process.env.BASE_URL}`,
-    methods: "GET ,PUT , POST ,DELETE",
+    origin: process.env.BASE_URL,
     credentials: true,
+    methods: "PUT,POST,GET,DELETE,PATCH,HEAD",
   })
 );
 
