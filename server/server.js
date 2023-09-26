@@ -23,6 +23,7 @@ app.use(
   cors({
     origin: `${process.env.BASE_URL}`,
     credentials: true,
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   })
 );
 
