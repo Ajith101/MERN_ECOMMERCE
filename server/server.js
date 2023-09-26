@@ -19,7 +19,13 @@ connectDB();
 const PORT = process.env.PORT | 2040;
 
 app.use(fileUpload());
-app.use(cors());
+app.use(
+  cors({
+    credentials: true,
+    origin: "http://localhost:5173/",
+    methods: "PUT,POST,DELETE,PATCH",
+  })
+);
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_NAME,
