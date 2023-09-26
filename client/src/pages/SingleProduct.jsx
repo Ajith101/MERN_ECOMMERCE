@@ -10,6 +10,7 @@ import { MdOutlineAssignment } from "react-icons/md";
 import SingleProductLoader from "../components/loader/SingleProductLoader";
 
 const SingleProduct = () => {
+  const [quantity, setQuantity] = useState(1);
   const [imagePreview, setImagePreview] = useState(null);
   const {
     addToCart,
@@ -74,15 +75,16 @@ const SingleProduct = () => {
               <div className="flex items-center pt-[10px]">
                 <div className="shadows flex items-center rounded-[5px] bg-[#f7f8fd]">
                   <button
-                    onClick={() => decreaseQtys()}
+                    disabled={quantity === 1}
+                    onClick={() => setQuantity((pre) => pre - 1)}
                     className="px-[14px] py-[8px] text-center text-[16px] sm:px-[20px] sm:text-[28px]"
                   >
                     -
                   </button>
                   {/* <p>{checkCartExist ? checkCartExist?.qty : singleItem?.qty}</p> */}
-                  <p>{singleItem?.stock}</p>
+                  <p>{quantity}</p>
                   <button
-                    onClick={() => increaseQty()}
+                    onClick={() => setQuantity((pre) => pre + 1)}
                     className="px-[14px] py-[8px] text-center text-[16px] sm:px-[20px] sm:text-[28px]"
                   >
                     +
@@ -91,8 +93,8 @@ const SingleProduct = () => {
               </div>
               <div className="flex items-center gap-[25px] py-[25px]">
                 <button
-                  onClick={() => addToCart(singleItem)}
-                  className="rounded-[5px] border-[1px] border-blue-600 bg-blue-50 px-[15px] py-[8px] text-center text-[16px] text-blue-600"
+                  onClick={() => addToCart(singleItem, quantity)}
+                  className="rounded-[5px] bg-blue-950 px-[15px] py-[8px] text-center text-[16px] text-white"
                 >
                   Add to cart
                 </button>
@@ -103,7 +105,7 @@ const SingleProduct = () => {
             </div>
           </div>
           <div className="max-w-[820px]">
-            <div className="rounded-sm border-[1px] p-3">
+            <div className="rounded-sm border-[1px] border-blue-600 bg-blue-50 p-3 text-blue-600">
               <h2 className="flex items-center gap-2 font-semibold">
                 <TbTruckDelivery color="indigo" /> Free Delivery
               </h2>
@@ -111,7 +113,7 @@ const SingleProduct = () => {
                 Enter your postal code to check available or not.
               </p>
             </div>
-            <div className="rounded-sm border-[1px] border-t-0 p-3">
+            <div className="rounded-sm border-[1px] border-t-0 border-blue-600 bg-blue-50 p-3 text-blue-600">
               <h2 className="flex items-center gap-2 font-semibold">
                 <MdOutlineAssignment color="indigo" /> Return Policy
               </h2>

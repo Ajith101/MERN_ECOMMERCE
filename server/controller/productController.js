@@ -16,6 +16,45 @@ const getSingleProduct = asyncHandler(async (req, res) => {
     throw new Error("Product not found");
   }
 });
+
+const getAllProducts = asyncHandler(async (req, res) => {
+  const { search, sort, categoryId, rating } = req.query;
+  let queryObject = {};
+  if (categoryId) {
+    queryObject.category = categoryId;
+  }
+  if (search) {
+    queryObject.name = { $regex: search, $options: "i" };
+  }
+  if (rating) {
+    queryObject.totalRatings = { $lte: rating };
+  }
+
+  const sortOptions = {
+    high: "-price",
+    low: "price",
+    "a-z": "name",
+    "z-a": "-name",
+  };
+  const sortKeys = sortOptions[sort] || sortOptions.newest;
+
+  const currentPage = Number(req.query.page) || 1;
+  const limit = 10;
+  const skip = (currentPage - 1) * limit;
+
+  const products = await productModel
+    .find(queryObject)
+    .sort(sortKeys)
+    .limit(limit)
+    .skip(skip);
+  const totalProducts = await productModel
+    .find(queryObject)
+    .sort(sortKeys)
+    .countDocuments();
+  const numberOfPages = Math.ceil(totalProducts / limit);
+  res.status(200).json({ totalProducts, numberOfPages, products });
+});
+
 const getSingleProductEdit = async (req, res) => {
   try {
     const { id } = req.body;
@@ -172,6 +211,7 @@ module.exports = {
   updateProduct,
   getSingleProduct,
   getAllProduct,
+  getAllProducts,
   deleteProduct,
   getSingleProductEdit,
   deleteProductImage,

@@ -84,8 +84,7 @@ const getNewOtp = asyncHandler(async (req, res) => {
     const otp = `${Math.floor(1000 + Math.random() * 999999)}`;
     const hashOtp = await bcrypt.hash(otp, 10);
     await userModel.updateOne({ email }, { $set: { otp: hashOtp } });
-    res.status(200).json({ otp });
-    // sendMail(email, "forgotPassword", res);
+    sendMail(email, "forgotPassword", res);
   }
 });
 
@@ -97,9 +96,7 @@ const registerUser = asyncHandler(async (req, res) => {
     const hashOtp = await bcrypt.hash(otp, 10);
     const newUser = new userModel({ ...req.body, otp: hashOtp });
     await newUser.save();
-    res.status(200).json({
-      otp,
-    });
+    sendMail(email, "signup", res);
   } else {
     res.status(400);
     throw new Error("User is already exist");

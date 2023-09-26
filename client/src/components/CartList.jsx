@@ -7,7 +7,7 @@ import { useAppStore } from "../utils/store/AppStore";
 import { useNavigate } from "react-router-dom";
 
 const CartList = ({ setShowCart, showCart }) => {
-  const { cart, user, getUserCart } = useAppStore();
+  const { cart, cartOne, user, getUserCart } = useAppStore();
   useEffect(() => {
     if (user) {
       getUserCart();
@@ -36,7 +36,7 @@ const CartList = ({ setShowCart, showCart }) => {
         </h2>
         <AiOutlineCloseCircle
           onClick={() => setShowCart(false)}
-          className="absolute right-4 top-4"
+          className="absolute right-4 top-4 cursor-pointer"
           size={"25px"}
           color="red"
         />

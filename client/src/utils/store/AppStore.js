@@ -3,9 +3,8 @@ import { toast } from "react-toastify";
 import axios from "./axios";
 
 const userExist = localStorage.getItem("user");
-const itemExist = localStorage.getItem("cart");
+const cart = localStorage.getItem("cart");
 export const BASE_URL = import.meta.env.VITE_DB_URL;
-const cartList = itemExist ? JSON.parse(itemExist) : [];
 
 export const useAppStore = create((set, get) => {
   return {
@@ -21,14 +20,15 @@ export const useAppStore = create((set, get) => {
     categoryProducts: [],
     searchResults: [],
     brands: [],
-    cart: null,
+    cart: cart ? JSON.parse(cart) : { products: [] },
+    cartOne: { products: [] },
     singleItem: null,
     trendingItems: [],
     errors: "",
     user: userExist ? JSON.parse(userExist) : null,
     allUser: [],
     cartNo: null,
-    isVisible: true,
+    isVisible: false,
     tempUser: null,
     getAllProducts: async () => {
       try {
@@ -79,7 +79,9 @@ export const useAppStore = create((set, get) => {
           isFetching: { ...state.isFetching, products: true },
         }));
         if (currentPath === "cat-product") {
-          const { data, status } = await axios(`api/products/category/${name}`);
+          const { data, status } = await axios(
+            `/api/products/category/${name}`
+          );
           if (status === 200) {
             set((state) => ({
               categoryProducts: data,
@@ -88,7 +90,16 @@ export const useAppStore = create((set, get) => {
             }));
           }
         } else if (currentPath === "brand-product") {
-          const { data, status } = await axios(`api/brand/name/${name}`);
+          const { data, status } = await axios(`/api/brand/name/${name}`);
+          if (status === 200) {
+            set((state) => ({
+              categoryProducts: data,
+              loading: false,
+              isFetching: { ...state.isFetching, products: false },
+            }));
+          }
+        } else if (currentPath === "popular-products") {
+          const { data, status } = await axios(`/api/products/by?rating=5`);
           if (status === 200) {
             set((state) => ({
               categoryProducts: data,
@@ -374,21 +385,58 @@ export const useAppStore = create((set, get) => {
         set(() => ({ loading: false, errors: error.response.data.message }));
       }
     },
-    addToCart: async (item) => {
-      try {
-        const { data, status } = await axios(`/api/user/add-cart`, {
-          method: "POST",
-          data: {
-            productId: item._id,
-          },
-        });
-        if (status == 200) {
-          toast.success("added to cart");
-          set(() => ({ loading: false, cartNo: data?.total }));
+    addToCart: async (item, qty) => {
+      const user = get().user;
+      if (user) {
+        try {
+          const { data, status } = await axios(`/api/user/add-cart`, {
+            method: "POST",
+            data: {
+              productId: item._id,
+            },
+          });
+          if (status == 200) {
+            toast.success("added to cart");
+            set(() => ({ loading: false, cartNo: data?.total }));
+          }
+        } catch (error) {
+          toast.error(error.response.data.message);
+          set(() => ({ loading: false, errors: error.response.data.message }));
         }
-      } catch (error) {
-        toast.error(error.response.data.message);
-        set(() => ({ loading: false, errors: error.response.data.message }));
+      } else {
+        let cart = get().cart;
+        const isExist = cart?.products?.find(
+          (data) => data?.productId?._id === item._id
+        );
+        if (isExist) {
+          const updateCart = cart?.products?.map((product) =>
+            product?.productId._id === item._id
+              ? {
+                  ...product,
+                  quantity: qty ? product.quantity + qty : product.quantity + 1,
+                }
+              : product
+          );
+          set((state) => ({ cart: { ...state.cart, products: updateCart } }));
+          localStorage.setItem("cart", JSON.stringify(get().cart));
+          toast.success("Added to cart");
+        } else {
+          const cart = get().cart;
+          if (cart === null) {
+            set(() => ({ cart: { products: [] } }));
+          }
+          set((state) => ({
+            cart: {
+              ...state.cart,
+              products: [
+                ...state.cart.products,
+                { productId: item, quantity: qty ? qty : 1 },
+              ],
+            },
+          }));
+          localStorage.setItem("cart", JSON.stringify(get().cart));
+          toast.success("Added to cart");
+        }
       }
     },
     // addToCart: (data) => {
@@ -408,80 +456,123 @@ export const useAppStore = create((set, get) => {
     //   }
     // },
     removeCart: async (id) => {
-      try {
-        const { status, data } = await axios(`/api/user/cart`, {
-          method: "DELETE",
-          data: {
-            productId: id,
-          },
-        });
-        if (status === 200) {
-          let cartList = get().cart;
-          const products = cartList?.products?.filter(
-            (item) => item.productId._id !== id
-          );
-          set((state) => ({
-            loading: false,
-            cart: { ...state.cart, products },
-            cartNo: data?.total,
-          }));
-
-          toast.success(data.message);
-        }
-      } catch (error) {}
+      const user = get().user;
+      if (user) {
+        try {
+          const { status, data } = await axios(`/api/user/cart`, {
+            method: "DELETE",
+            data: {
+              productId: id,
+            },
+          });
+          if (status === 200) {
+            let cartList = get().cart;
+            const products = cartList?.products?.filter(
+              (item) => item.productId._id !== id
+            );
+            set((state) => ({
+              loading: false,
+              cart: { ...state.cart, products },
+              cartNo: data?.total,
+            }));
+            toast.success(data.message);
+          }
+        } catch (error) {}
+      } else {
+        let cartList = get().cart;
+        const products = cartList?.products?.filter(
+          (item) => item.productId._id !== id
+        );
+        set((state) => ({
+          loading: false,
+          cart: { ...state.cart, products },
+        }));
+        toast.success("Removed successfully");
+        localStorage.setItem("cart", JSON.stringify(get().cart));
+      }
     },
     addQty: async (id) => {
-      try {
-        // set(() => ({ loading: true }));
-        const { status, data } = await axios(`/api/user/cart/add-qty`, {
-          method: "PUT",
-          data: {
-            productId: id,
-          },
-        });
-        if (status === 200) {
-          let cartList = get().cart;
-          const products = cartList?.products?.map((item) =>
-            item.productId._id === id
-              ? { ...item, quantity: item.quantity + 1 }
-              : item
-          );
-          set((state) => ({
-            loading: false,
-            cart: { ...state.cart, products },
-          }));
-          toast.success(data.message);
+      const user = get().user;
+      if (user) {
+        try {
+          // set(() => ({ loading: true }));
+          const { status, data } = await axios(`/api/user/cart/add-qty`, {
+            method: "PUT",
+            data: {
+              productId: id,
+            },
+          });
+          if (status === 200) {
+            let cartList = get().cart;
+            const products = cartList?.products?.map((item) =>
+              item.productId._id === id
+                ? { ...item, quantity: item.quantity + 1 }
+                : item
+            );
+            set((state) => ({
+              loading: false,
+              cart: { ...state.cart, products },
+            }));
+            toast.success(data.message);
+          }
+        } catch (error) {
+          toast.error(error.response.data.message);
+          set(() => ({ loading: false, errors: error.response.data.message }));
         }
-      } catch (error) {
-        toast.error(error.response.data.message);
-        set(() => ({ loading: false, errors: error.response.data.message }));
+      } else {
+        let cartList = get().cart;
+        const products = cartList?.products?.map((item) =>
+          item.productId._id === id
+            ? { ...item, quantity: item.quantity + 1 }
+            : item
+        );
+        set((state) => ({
+          loading: false,
+          cart: { ...state.cart, products },
+        }));
+        localStorage.setItem("cart", JSON.stringify(get().cart));
       }
     },
     decreaseQty: async (id) => {
-      try {
-        // set(() => ({ loading: true }));
-        const { status, data } = await axios(`/api/user/cart/decrease-qty`, {
-          method: "PUT",
-          data: {
-            productId: id,
-          },
-        });
-        if (status === 200) {
-          let cartList = get().cart;
-          const products = cartList?.products?.map((item) =>
-            item.productId._id === id
-              ? { ...item, quantity: item.quantity - 1 }
-              : item
-          );
-          set((state) => ({
-            loading: false,
-            cart: { ...state.cart, products },
-          }));
-          toast.success(data.message);
+      const user = get().user;
+      if (user) {
+        try {
+          // set(() => ({ loading: true }));
+          const { status, data } = await axios(`/api/user/cart/decrease-qty`, {
+            method: "PUT",
+            data: {
+              productId: id,
+            },
+          });
+          if (status === 200) {
+            let cartList = get().cart;
+            const products = cartList?.products?.map((item) =>
+              item.productId._id === id
+                ? { ...item, quantity: item.quantity - 1 }
+                : item
+            );
+            set((state) => ({
+              loading: false,
+              cart: { ...state.cart, products },
+            }));
+            toast.success(data.message);
+          }
+        } catch (error) {
+          toast.error(error.response.data.message);
+          set(() => ({ loading: false, errors: error.response.data.message }));
         }
-      } catch (error) {
-        toast.error(error.response.data.message);
-        set(() => ({ loading: false, errors: error.response.data.message }));
+      } else {
+        let cartList = get().cart;
+        const products = cartList?.products?.map((item) =>
+          item.productId._id === id
+            ? { ...item, quantity: item.quantity - 1 }
+            : item
+        );
+        set((state) => ({
+          loading: false,
+          cart: { ...state.cart, products },
+        }));
+        localStorage.setItem("cart", JSON.stringify(get().cart));
       }
     },
     addCategory: async (values, navigate) => {

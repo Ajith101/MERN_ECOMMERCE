@@ -3,10 +3,11 @@ import { useAppStore } from "../utils/store/AppStore";
 import ByList from "../components/ByList";
 import useFetch from "../../hooks/fetchList";
 
-const ByCategory = () => {
+const ByBrand = () => {
   const { isFetching } = useAppStore();
   const { name } = useParams();
-  const { results } = useFetch(`/api/products/category/${name}`);
+  const { results } = useFetch(`/api/brand/name/${name}`);
+
   return (
     <>
       <ByList
@@ -18,4 +19,4 @@ const ByCategory = () => {
   );
 };
 
-export default ByCategory;
+export default ByBrand;

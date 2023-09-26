@@ -30,6 +30,8 @@ import { useEffect } from "react";
 import { useAppStore } from "../utils/store/AppStore";
 import Brands from "../pages/Brands";
 import SingleProductLoader from "../components/loader/SingleProductLoader";
+import ByBrand from "../pages/ByBrand";
+import PopularProducts from "../pages/PopularProducts";
 
 const AppLayout = () => {
   const location = useLocation();
@@ -90,7 +92,11 @@ export const appRouter = createBrowserRouter([
       },
       {
         path: "/brand-product/:name",
-        element: <ByCategory />,
+        element: <ByBrand />,
+      },
+      {
+        path: "/popular-products",
+        element: <PopularProducts />,
       },
       {
         path: "/login",

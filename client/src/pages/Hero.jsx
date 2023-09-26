@@ -1,15 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import Layout from "../components/layout/Layout";
-import Search from "../components/search/Search";
 import { useAppStore } from "../utils/store/AppStore";
 import ProductCard from "./../components/ProductCard";
 import ProductLoader from "../components/loader/ProductLoader";
 import CategoryLoader from "../components/loader/CategoryLoader";
 import { useNavigate } from "react-router-dom";
-import axios from "../utils/store/axios";
-import { toast } from "react-toastify";
 import BrandCard from "../components/BrandCard";
-import { BsCart2, BsGiftFill, BsHeadset } from "react-icons/bs";
+import { BsGiftFill, BsHeadset } from "react-icons/bs";
 import { FaShippingFast } from "react-icons/fa";
 import { BiSolidOffer } from "react-icons/bi";
 import { AiFillCreditCard } from "react-icons/ai";
@@ -33,15 +30,12 @@ const CategoryCards = ({ item }) => {
 };
 
 const Hero = () => {
-  const [currentCategory, setCurrentCategory] = useState(null);
-  const [byCategory, setByCategory] = useState(null);
+  const navigate = useNavigate();
   const {
-    loading,
     categorys,
     isFetching,
     getAllProducts,
     allProducts,
-    toggleVisible,
     getAllBrands,
     brands,
   } = useAppStore();
@@ -49,29 +43,9 @@ const Hero = () => {
     getAllProducts();
     getAllBrands();
   }, []);
-
-  // const toggleSearchIcon = () => {
-  //   let y = window.scrollY;
-  //   if (y > 320) {
-  //     toggleVisible(true);
-  //   } else {
-  //     toggleVisible(false);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   window.addEventListener("scroll", toggleSearchIcon);
-  //   return () => window.removeEventListener("scroll", toggleSearchIcon);
-  // }, []);
-
-  const displayProducts =
-    byCategory === null
-      ? allProducts?.map((item, id) => {
-          return <ProductCard item={item} key={id} />;
-        })
-      : byCategory?.map((item, id) => {
-          return <ProductCard item={item} key={id} />;
-        });
+  const displayProducts = allProducts?.map((item, id) => {
+    return <ProductCard item={item} key={id} />;
+  });
 
   const cateNames = categorys?.map((item, id) => {
     return <CategoryCards item={item} key={id} />;
@@ -94,7 +68,6 @@ const Hero = () => {
                 Shop with Confidence - Trust Our Reliable Service and Secure
                 Checkout Process!
               </p>
-              {/* <Search /> */}
             </div>
           </div>
           <h2 className="text-[18px] font-semibold text-slate-800">
@@ -111,7 +84,10 @@ const Hero = () => {
             <h2 className="text-[18px] font-[600] text-slate-800">
               Popular Deals
             </h2>
-            <button className="rounded-full bg-blue-900 px-4 py-1 text-center text-white">
+            <button
+              onClick={() => navigate("/popular-products")}
+              className="rounded-full bg-blue-900 px-4 py-1 text-center text-white"
+            >
               See All
             </button>
           </div>

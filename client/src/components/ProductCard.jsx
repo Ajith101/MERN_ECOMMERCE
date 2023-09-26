@@ -14,7 +14,7 @@ const ProductCard = ({ item }) => {
           src={item?.images[0]?.url}
           alt=""
           onClick={() => navigate(`/product/${item._id}`)}
-          className="h-full w-full rounded-tl-[10px] rounded-tr-[10px] object-contain"
+          className="h-full w-full cursor-pointer rounded-tl-[10px] rounded-tr-[10px] object-contain"
         />
         {item?.category?.name ? (
           <span className="absolute left-[6px] top-[6px] rounded-[4px] bg-[#274C5B] px-[5px] py-[4px] font-font-1 text-[12px] font-[500] text-white">
@@ -26,7 +26,7 @@ const ProductCard = ({ item }) => {
       <div className="flex flex-col gap-[10px]">
         <h1
           onClick={() => navigate(`/product/${item._id}`)}
-          className="font-font-1 text-[16px] font-semibold text-[#274C5B]"
+          className="cursor-pointer font-font-1 text-[16px] font-semibold text-[#274C5B]"
         >
           {item?.name}
         </h1>

@@ -2,10 +2,13 @@ import React, { useEffect, useRef, useState } from "react";
 import { AiOutlineArrowLeft } from "react-icons/ai";
 import { BsArrowUpLeft } from "react-icons/bs";
 import { MdOutlineAccessTime } from "react-icons/md";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Navigate } from "react-router-dom";
 import { useAppStore } from "../utils/store/AppStore";
+import { useScreenSize } from "../../hooks/screenSize";
 
 const Search = () => {
+  const navigate = useNavigate();
+  const { width } = useScreenSize();
   const { searchProducts, searchResults } = useAppStore();
   const [value, setValue] = useState("");
   const handleChange = (e) => {
@@ -13,12 +16,15 @@ const Search = () => {
   };
 
   useEffect(() => {
+    if (width > 640) {
+      navigate("/");
+    }
+  }, [width]);
+  useEffect(() => {
     if (value) {
       searchProducts(value);
     }
   }, [value]);
-
-  const navigate = useNavigate();
   const handleSubmit = (e) => {
     e.preventDefault();
   };

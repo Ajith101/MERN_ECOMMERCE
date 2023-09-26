@@ -15,6 +15,7 @@ const {
   getSingleCategory,
   getProductsByCategory,
   searchProduct,
+  getAllProducts,
 } = require("../controller/productController");
 const { checkAuth, checkAdmin } = require("../middleware/auth");
 
@@ -22,6 +23,7 @@ const productRoute = express.Router();
 
 productRoute.post("/search", searchProduct);
 productRoute.get("/", getAllProduct);
+productRoute.get("/by", getAllProducts);
 productRoute.get("/category/:name", getProductsByCategory);
 productRoute.put("/", [checkAuth, checkAdmin], updateProduct);
 productRoute.delete("/", [checkAuth, checkAdmin], deleteProduct);

@@ -18,12 +18,17 @@ const LogOutMenu = ({ setUserMenu, userMenu }) => {
       {user ? (
         <>
           <h2 className="py-2">Profile</h2>
-          <h2 onClick={() => logOut(setUserMenu, navigate)}>Logout</h2>
+          <h2
+            className="cursor-pointer"
+            onClick={() => logOut(setUserMenu, navigate)}
+          >
+            Logout
+          </h2>
         </>
       ) : (
         <>
           <h2
-            className="py-2"
+            className="cursor-pointer py-2"
             onClick={() => {
               navigate("/login");
               setUserMenu(false);
@@ -32,6 +37,7 @@ const LogOutMenu = ({ setUserMenu, userMenu }) => {
             Login
           </h2>
           <h2
+            className="cursor-pointer"
             onClick={() => {
               navigate("/register");
               setUserMenu(false);

@@ -9,15 +9,23 @@ import { TbLayoutDashboard } from "react-icons/tb";
 import CartList from "../CartList";
 import { CgSearch } from "react-icons/cg";
 import LogOutMenu from "./LogOutMenu";
+import { useScreenSize } from "../../../hooks/screenSize";
+import SearchBar from "../search/SearchBar";
 
 export const CartNumber = () => {
-  const { cartNo } = useAppStore();
+  const { cartNo, cart, user } = useAppStore();
   return (
     <>
-      {cartNo ? (
+      {cartNo && user ? (
         <div className="relative h-[20px] w-[20px] rounded-full border-[2px] border-white bg-red-600 p-[2px]">
           <span className="absolute left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] text-[10px]">
             {cartNo}
+          </span>
+        </div>
+      ) : cart?.products?.length ? (
+        <div className="relative h-[20px] w-[20px] rounded-full border-[2px] border-white bg-red-600 p-[2px]">
+          <span className="absolute left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] text-[10px]">
+            {cart?.products?.length}
           </span>
         </div>
       ) : null}
@@ -26,12 +34,21 @@ export const CartNumber = () => {
 };
 
 const Header = () => {
+  const [value, setValue] = useState("");
   const [userMenu, setUserMenu] = useState(false);
   const [showCart, setShowCart] = useState(false);
   const [nav, setNav] = useState(false);
+  const { width } = useScreenSize();
   const navigate = useNavigate();
   const { addToCart, user, getCartNumbers, cartNo, isVisible, toggleVisible } =
     useAppStore();
+  useEffect(() => {
+    if (width > 640) {
+      toggleVisible(true);
+    } else {
+      toggleVisible(false);
+    }
+  }, [width]);
   useEffect(() => {
     if (user) {
       getCartNumbers();
@@ -64,10 +81,10 @@ const Header = () => {
         </div>
 
         <div className="flex items-center gap-[25px]">
+          {width > 640 && isVisible ? <SearchBar /> : null}
           <CgSearch
-            onClick={() => {
-              navigate("/search");
-            }}
+            className="sm:hidden"
+            onClick={() => navigate("/search")}
             size={"25px"}
             color="white"
           />

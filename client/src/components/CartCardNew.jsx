@@ -25,6 +25,7 @@ const CartCardNew = ({ item }) => {
             <p className="text-slate-500">{item?.productId?.category?.name}</p>
             <div className="flex items-center gap-2">
               <FaMinus
+                className="cursor-pointer"
                 onClick={() => {
                   item?.quantity === 1
                     ? removeCart(item?.productId?._id)
@@ -34,6 +35,7 @@ const CartCardNew = ({ item }) => {
               />
               <span className="text-slate-500">Qty: {item?.quantity}</span>
               <FaPlus
+                className="cursor-pointer"
                 onClick={() => addQty(item?.productId?._id)}
                 color="green"
               />
@@ -43,7 +45,7 @@ const CartCardNew = ({ item }) => {
         <div className="flex items-center gap-2">
           <button
             onClick={() => removeCart(item?.productId?._id)}
-            className="h-8 w-8 rounded-full bg-[red] p-2"
+            className="h-8 w-8 cursor-pointer rounded-full bg-[red] p-2"
           >
             <FaTrash color="white" />
           </button>
