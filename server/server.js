@@ -22,7 +22,6 @@ app.use(fileUpload());
 app.use(
   cors({
     origin: `${process.env.BASE_URL}`,
-    methods: "GET ,PUT , POST ,DELETE",
     credentials: true,
   })
 );
