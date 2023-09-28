@@ -145,8 +145,7 @@ const forgotPassword = asyncHandler(async (req, res) => {
     const otp = `${Math.floor(1000 + Math.random() * 999999)}`;
     const hashOtp = await bcrypt.hash(otp, 10);
     await userModel.updateOne({ email }, { $set: { otp: hashOtp } });
-    res.status(200).json({ otp });
-    // sendMail(email, "forgotPassword", res);
+    sendMail(email, "forgotPassword", res);
   }
 });
 

@@ -28,7 +28,7 @@ const ProductCard = ({ item }) => {
           onClick={() => navigate(`/product/${item._id}`)}
           className="cursor-pointer font-font-1 text-[16px] font-semibold text-[#274C5B]"
         >
-          {item?.name}
+          {item?.name.charAt(0).toUpperCase() + item?.name.slice(1)}
         </h1>
         <div className="w-full border-b-[1px] border-[#DEDDDD]"></div>
         <div className="flex items-center justify-between">

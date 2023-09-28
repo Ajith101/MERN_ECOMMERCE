@@ -13,12 +13,16 @@ const ByList = ({ products, title, isFetching }) => {
           Home
         </h2>
         {"/"}
-        <h2>{products?.length > 0 && title}</h2>
+        <h2>
+          {products?.length > 0 &&
+            title.charAt(0).toUpperCase() + title.slice(1)}
+        </h2>
       </div>{" "}
       <h2 className="text-[18px] font-bold">
         {products?.length > 0 && (
           <>
-            {title} {`(${products?.length} Products)`}
+            {title.charAt(0).toUpperCase() + title.slice(1)}{" "}
+            {`(${products?.length} Products)`}
           </>
         )}
       </h2>

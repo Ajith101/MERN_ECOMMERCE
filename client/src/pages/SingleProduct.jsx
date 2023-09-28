@@ -46,7 +46,10 @@ const SingleProduct = () => {
               {/* <span className="uppercase text-blue-950">
             {singleItem?.category?.name}
           </span> */}
-              <h1 className="text-[26px] font-[600]">{singleItem?.name}</h1>
+              <h1 className="text-[26px] font-[600]">
+                {singleItem?.name.charAt(0).toUpperCase() +
+                  singleItem?.name.slice(1)}
+              </h1>
               <p className="text-slate-400">
                 Lorem ipsum dolor sit amet consectetur, adipisicing elit.
                 Ratione, excepturi accusantium rerum facere natus vero inventore
