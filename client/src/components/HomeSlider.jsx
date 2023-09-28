@@ -9,7 +9,8 @@ import "swiper/css/pagination";
 const HomeSlider = () => {
   const carouselData = [
     {
-      image: "",
+      image:
+        "https://i.pinimg.com/originals/ef/80/83/ef8083bfe79088dc00bd8eca9c821cd5.jpg",
       sequence: ["BEST", 1000, "LAPTOPS", 2000],
       text: "from ₹37,000",
       link: "/cat-product/laptops",

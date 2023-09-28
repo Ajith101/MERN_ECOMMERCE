@@ -16,13 +16,13 @@ import { Link } from "react-router-dom";
 const CategoryCards = ({ item }) => {
   return (
     <>
-      <div className="relative flex h-[120px] w-full flex-col border-[1px] md:h-[150px]">
+      <div className="relative flex h-[120px] w-full flex-col border-[1px] shadow-md md:h-[150px]">
         <img
           src={item?.image?.url}
-          className="h-full w-full object-cover"
+          className="h-full w-full object-contain"
           alt=""
         />
-        <div className="absolute inset-0 flex h-full w-full items-center justify-center bg-black/60 p-4">
+        <div className="absolute inset-0 flex h-full w-full items-center justify-center p-4">
           <Link
             to={`/cat-product/${item?.name}`}
             className="text-lg font-medium text-white hover:underline"
