@@ -43,11 +43,9 @@ export const useAppStore = create((set, get) => {
           isFetching: { ...state.isFetching, products: false },
         }));
       } catch (error) {
-        toast.error(error.response.data.message);
-        set(() => ({
-          loading: false,
-          errors: error.response.data.message,
-          isFetching: { ...state.isFetching, products: false },
+        toast.error(error?.response?.data?.message);
+        set((state) => ({
+          errors: error?.response?.data?.message,
         }));
       }
     },
@@ -64,11 +62,9 @@ export const useAppStore = create((set, get) => {
           isFetching: { ...state.isFetching, brands: false },
         }));
       } catch (error) {
-        toast.error(error.response.data.message);
+        toast.error(error?.response?.data?.message);
         set((state) => ({
-          loading: false,
-          errors: error.response.data.message,
-          isFetching: { ...state.isFetching, brands: false },
+          errors: error?.response?.data?.message,
         }));
       }
     },
@@ -109,11 +105,9 @@ export const useAppStore = create((set, get) => {
           }
         }
       } catch (error) {
-        toast.error(error.response.data.message);
-        set((state) => ({
-          loading: false,
-          errors: error.response.data.message,
-          isFetching: { ...state.isFetching, products: false },
+        toast.error(error?.response?.data?.message);
+        set(() => ({
+          errors: error?.response?.data?.message,
         }));
       }
     },
@@ -135,7 +129,6 @@ export const useAppStore = create((set, get) => {
       } catch (error) {
         toast.error(error.response.data.message);
         set(() => ({
-          loading: false,
           errors: error.response.data.message,
         }));
       }
@@ -158,8 +151,8 @@ export const useAppStore = create((set, get) => {
           toast.success("Deleted successfully");
         }
       } catch (error) {
-        toast.error(error.response.data.message);
-        set(() => ({ loading: false, errors: error.response.data.message }));
+        toast.error(error?.response?.data?.message);
+        set(() => ({ errors: error?.response?.data?.message }));
       }
     },
     getTrendingItems: async () => {
@@ -168,8 +161,8 @@ export const useAppStore = create((set, get) => {
         const response = await axios(`/api/products/trending`);
         set(() => ({ trendingItems: response?.data, loading: false }));
       } catch (error) {
-        toast.error(error.response.data.message);
-        set(() => ({ loading: false, errors: error.response.data.message }));
+        toast.error(error?.response?.data?.message);
+        set(() => ({ errors: error?.response?.data?.message }));
       }
     },
     getSingleProductEdit: async (id, setValues) => {
@@ -189,12 +182,8 @@ export const useAppStore = create((set, get) => {
         }));
         setValues((pre) => ({ ...pre, ...data }));
       } catch (error) {
-        toast.error(error.response.data.message);
-        set((state) => ({
-          loading: false,
-          errors: error.response.data.message,
-          isFetching: { ...state.isFetching, singleProduct: false },
-        }));
+        toast.error(error?.response?.data?.message);
+        set(() => ({ errors: error?.response?.data?.message }));
       }
     },
     getSingleProduct: async (id) => {
@@ -218,12 +207,8 @@ export const useAppStore = create((set, get) => {
           }));
         }
       } catch (error) {
-        toast.error(error.response.data.message);
-        set((state) => ({
-          loading: false,
-          errors: error.response.data.message,
-          isFetching: { ...state.isFetching, singleProduct: false },
-        }));
+        toast.error(error?.response?.data?.message);
+        set(() => ({ errors: error?.response?.data?.message }));
       }
       // try {
       //   set(() => ({ loading: true }));
@@ -258,8 +243,8 @@ export const useAppStore = create((set, get) => {
           toast.success("Added successfully");
         }
       } catch (error) {
-        toast.error(error.response.data.message);
-        set(() => ({ loading: false, errors: error.response.data.message }));
+        toast.error(error?.response?.data?.message);
+        set(() => ({ errors: error?.response?.data?.message }));
       }
     },
     editProduct: async (values, id, navigate) => {
@@ -288,8 +273,8 @@ export const useAppStore = create((set, get) => {
           set(() => ({ loading: false }));
         }
       } catch (error) {
-        toast.error(error.response.data.message);
-        set(() => ({ loading: false, errors: error.response.data.message }));
+        toast.error(error?.response?.data?.message);
+        set(() => ({ errors: error?.response?.data?.message }));
       }
     },
     removeImage: async (id, image, setValues, values) => {
@@ -341,12 +326,8 @@ export const useAppStore = create((set, get) => {
           isFetching: { ...state.isFetching, category: false },
         }));
       } catch (error) {
-        toast.error(error.response.data.message);
-        set(() => ({
-          loading: false,
-          errors: error.response.data.message,
-          isFetching: { ...state.isFetching, category: false },
-        }));
+        toast.error(error?.response?.data?.message);
+        set(() => ({ errors: error?.response?.data?.message }));
       }
     },
     addCart: (data) => {
@@ -371,8 +352,8 @@ export const useAppStore = create((set, get) => {
         const { data } = await axios("/api/user/cart/qty");
         set(() => ({ cartNo: data, loading: false }));
       } catch (error) {
-        toast.error(error.response.data.message);
-        set(() => ({ loading: false, errors: error.response.data.message }));
+        toast.error(error?.response?.data?.message);
+        set(() => ({ errors: error?.response?.data?.message }));
       }
     },
     getUserCart: async () => {
@@ -381,8 +362,8 @@ export const useAppStore = create((set, get) => {
         const { data } = await axios(`/api/user/cart`);
         set(() => ({ cart: data, loading: false }));
       } catch (error) {
-        toast.error(error.response.data.message);
-        set(() => ({ loading: false, errors: error.response.data.message }));
+        toast.error(error?.response?.data?.message);
+        set(() => ({ errors: error?.response?.data?.message }));
       }
     },
     addToCart: async (item, qty) => {
@@ -400,8 +381,8 @@ export const useAppStore = create((set, get) => {
             set(() => ({ loading: false, cartNo: data?.total }));
           }
         } catch (error) {
-          toast.error(error.response.data.message);
-          set(() => ({ loading: false, errors: error.response.data.message }));
+          toast.error(error?.response?.data?.message);
+          set(() => ({ errors: error?.response?.data?.message }));
         }
       } else {
         let cart = get().cart;
@@ -516,8 +497,8 @@ export const useAppStore = create((set, get) => {
             toast.success(data.message);
           }
         } catch (error) {
-          toast.error(error.response.data.message);
-          set(() => ({ loading: false, errors: error.response.data.message }));
+          toast.error(error?.response?.data?.message);
+          set(() => ({ errors: error?.response?.data?.message }));
         }
       } else {
         let cartList = get().cart;
@@ -558,8 +539,8 @@ export const useAppStore = create((set, get) => {
             toast.success(data.message);
           }
         } catch (error) {
-          toast.error(error.response.data.message);
-          set(() => ({ loading: false, errors: error.response.data.message }));
+          toast.error(error?.response?.data?.message);
+          set(() => ({ errors: error?.response?.data?.message }));
         }
       } else {
         let cartList = get().cart;
@@ -591,8 +572,8 @@ export const useAppStore = create((set, get) => {
           navigate("/admin/category");
         }
       } catch (error) {
-        toast.error(error.response.data.message);
-        set(() => ({ loading: false, errors: error.response.data.message }));
+        toast.error(error?.response?.data?.message);
+        set(() => ({ errors: error?.response?.data?.message }));
       }
     },
     editCategory: async (values, navigate) => {
@@ -613,8 +594,8 @@ export const useAppStore = create((set, get) => {
           navigate("/admin/category");
         }
       } catch (error) {
-        toast.error(error.response.data.message);
-        set(() => ({ loading: false, errors: error.response.data.message }));
+        toast.error(error?.response?.data?.message);
+        set(() => ({ errors: error?.response?.data?.message }));
       }
     },
     deleteCategory: async (id, setShowpopUp) => {
@@ -630,8 +611,8 @@ export const useAppStore = create((set, get) => {
         toast.success("Deleted");
         setShowpopUp(false);
       } catch (error) {
-        toast.error(error.response.data.message);
-        set(() => ({ errors: error.response.data.message, loading: false }));
+        toast.error(error?.response?.data?.message);
+        set(() => ({ errors: error?.response?.data?.message }));
       }
     },
     removeCategoryImage: async (values, setValues) => {
@@ -650,8 +631,8 @@ export const useAppStore = create((set, get) => {
           }));
         }
       } catch (error) {
-        toast.error(error.response.data.message);
-        set(() => ({ loading: false, errors: error.response.data.message }));
+        toast.error(error?.response?.data?.message);
+        set(() => ({ errors: error?.response?.data?.message }));
       }
     },
     getCategory: async (id, setValues, navigate) => {
@@ -667,8 +648,8 @@ export const useAppStore = create((set, get) => {
         if (error?.response?.status == 401) {
           navigate("/login");
         }
-        toast.error(error.response.data.message);
-        set(() => ({ loading: false, errors: error.response.data.message }));
+        toast.error(error?.response?.data?.message);
+        set(() => ({ errors: error?.response?.data?.message }));
       }
     },
     addBrand: async (values, navigate) => {
@@ -687,8 +668,8 @@ export const useAppStore = create((set, get) => {
           navigate("/admin/brand");
         }
       } catch (error) {
-        toast.error(error.response.data.message);
-        set(() => ({ loading: false, errors: error.response.data.message }));
+        toast.error(error?.response?.data?.message);
+        set(() => ({ errors: error?.response?.data?.message }));
       }
     },
     editBrand: async (values, navigate) => {
@@ -709,8 +690,8 @@ export const useAppStore = create((set, get) => {
           navigate("/admin/brand");
         }
       } catch (error) {
-        toast.error(error.response.data.message);
-        set(() => ({ loading: false, errors: error.response.data.message }));
+        toast.error(error?.response?.data?.message);
+        set(() => ({ errors: error?.response?.data?.message }));
       }
     },
     getBrands: async () => {
@@ -719,8 +700,8 @@ export const useAppStore = create((set, get) => {
         const { data } = await axios("/api/brand");
         set(() => ({ brands: data, loading: false }));
       } catch (error) {
-        toast.error(error.response.data.message);
-        set(() => ({ loading: false, errors: error.response.data.message }));
+        toast.error(error?.response?.data?.message);
+        set(() => ({ errors: error?.response?.data?.message }));
       }
     },
     getBrand: async (id, setValues, navigate) => {
@@ -736,8 +717,8 @@ export const useAppStore = create((set, get) => {
         if (error?.response?.status == 401) {
           navigate("/login");
         }
-        toast.error(error.response.data.message);
-        set(() => ({ loading: false, errors: error.response.data.message }));
+        toast.error(error?.response?.data?.message);
+        set(() => ({ errors: error?.response?.data?.message }));
       }
     },
     removeBrandImage: async (values, setValues) => {
@@ -756,8 +737,8 @@ export const useAppStore = create((set, get) => {
           }));
         }
       } catch (error) {
-        toast.error(error.response.data.message);
-        set(() => ({ loading: false, errors: error.response.data.message }));
+        toast.error(error?.response?.data?.message);
+        set(() => ({ errors: error?.response?.data?.message }));
       }
     },
     deleteBrand: async (id, setShowpopUp) => {
@@ -773,8 +754,8 @@ export const useAppStore = create((set, get) => {
         toast.success("Deleted");
         setShowpopUp(false);
       } catch (error) {
-        toast.error(error.response.data.message);
-        set(() => ({ loading: false, errors: error.response.data.message }));
+        toast.error(error?.response?.data?.message);
+        set(() => ({ errors: error?.response?.data?.message }));
       }
     },
     registerUser: async (values, navigate) => {
@@ -791,8 +772,8 @@ export const useAppStore = create((set, get) => {
           set(() => ({ loading: false, tempUser: values.email }));
         }
       } catch (error) {
-        toast.error(error.response.data.message);
-        set(() => ({ loading: false, errors: error.response.data.message }));
+        toast.error(error?.response?.data?.message);
+        set(() => ({ errors: error?.response?.data?.message }));
       }
     },
     loginUser: async (values, navigate) => {
@@ -816,8 +797,8 @@ export const useAppStore = create((set, get) => {
           localStorage.setItem("user", JSON.stringify(data.user));
         }
       } catch (error) {
-        toast.error(error.response.data.message);
-        set(() => ({ loading: false, errors: error.response.data.message }));
+        toast.error(error?.response?.data?.message);
+        set(() => ({ errors: error?.response?.data?.message }));
       }
     },
     getAllUsers: async () => {
@@ -828,8 +809,8 @@ export const useAppStore = create((set, get) => {
           set((state) => ({ loading: false, allUser: data }));
         }
       } catch (error) {
-        toast.error(error.response.data.message);
-        set(() => ({ loading: false, errors: error.response.data.message }));
+        toast.error(error?.response?.data?.message);
+        set(() => ({ errors: error?.response?.data?.message }));
       }
     },
     forgotPassword: async (values, navigate) => {
@@ -932,8 +913,8 @@ export const useAppStore = create((set, get) => {
           localStorage.clear();
         }
       } catch (error) {
-        toast.error(error.response.data.message);
-        set(() => ({ loading: false, errors: error.response.data.message }));
+        toast.error(error?.response?.data?.message);
+        set(() => ({ errors: error?.response?.data?.message }));
       }
     },
     toggleVisible: (value) => {

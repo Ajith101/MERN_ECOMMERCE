@@ -10,20 +10,26 @@ import { BsGiftFill, BsHeadset } from "react-icons/bs";
 import { FaShippingFast } from "react-icons/fa";
 import { BiSolidOffer } from "react-icons/bi";
 import { AiFillCreditCard } from "react-icons/ai";
+import HomeSlider from "../components/HomeSlider";
+import { Link } from "react-router-dom";
 
 const CategoryCards = ({ item }) => {
-  const navigate = useNavigate();
   return (
     <>
-      <div
-        onClick={() => navigate(`/cat-product/${item?.name}`)}
-        className="flex h-[120px] w-full flex-col border-[1px] bg-white md:h-[150px]"
-      >
+      <div className="relative flex h-[120px] w-full flex-col border-[1px] md:h-[150px]">
         <img
           src={item?.image?.url}
-          className="h-full w-full object-contain"
+          className="h-full w-full object-cover"
           alt=""
         />
+        <div className="absolute inset-0 flex h-full w-full items-center justify-center bg-black/60 p-4">
+          <Link
+            to={`/cat-product/${item?.name}`}
+            className="text-lg font-medium text-white hover:underline"
+          >
+            {item?.name}
+          </Link>
+        </div>
       </div>
     </>
   );
@@ -70,6 +76,7 @@ const Hero = () => {
               </p>
             </div>
           </div>
+          <HomeSlider />
           <h2 className="text-[18px] font-semibold text-slate-800">
             Shop by Categories
           </h2>
