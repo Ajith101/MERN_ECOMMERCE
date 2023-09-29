@@ -18,9 +18,6 @@ const useFetch = (url) => {
         }));
       }
     } catch (error) {
-      useAppStore.setState((state) => ({
-        isFetching: { ...state.isFetching, products: false },
-      }));
       toast.error(error?.response?.data?.message);
     }
   };
