@@ -3,7 +3,6 @@ import Header from "../components/nav/Header";
 import Footer from "../components/nav/Footer";
 import {
   About,
-  Cart,
   Contact,
   PageNotFound,
   Login,
@@ -20,29 +19,26 @@ import {
   PasswordReset,
   VerifyRegister,
   Search,
+  SingleProduct,
+  PopularProducts,
+  AddBrand,
+  Brands,
+  ByBrand,
 } from "../pages/";
-import SingleProduct from "../pages/SingleProduct";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import DashBoardWrapper from "../components/DashBoardWrapper";
-import AddBrand from "../pages/AddBrand";
 import { useEffect } from "react";
 import { useAppStore } from "../utils/store/AppStore";
-import Brands from "../pages/Brands";
 import SingleProductLoader from "../components/loader/SingleProductLoader";
-import ByBrand from "../pages/ByBrand";
-import PopularProducts from "../pages/PopularProducts";
 
 const AppLayout = () => {
-  const location = useLocation();
+  const { pathname } = useLocation();
   const { loading } = useAppStore();
 
-  // useEffect(() => {
-
-  // }, []);
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
-  }, [location]);
+  }, [pathname]);
   return (
     <>
       <Header />
@@ -71,108 +67,104 @@ export const appRouter = createBrowserRouter([
         element: <Hero />,
       },
       {
-        path: "/cart",
-        element: <Cart />,
-      },
-      {
-        path: "/about",
+        path: "about",
         element: <About />,
       },
       {
-        path: "/contact",
+        path: "contact",
         element: <Contact />,
       },
       {
-        path: "/product/:id",
+        path: "product/:id",
         element: <SingleProduct />,
       },
       {
-        path: "/cat-product/:name",
+        path: "cat-product/:name",
         element: <ByCategory />,
       },
       {
-        path: "/brand-product/:name",
+        path: "brand-product/:name",
         element: <ByBrand />,
       },
       {
-        path: "/popular-products",
+        path: "popular-products",
         element: <PopularProducts />,
       },
       {
-        path: "/login",
+        path: "login",
         element: <Login />,
       },
       {
-        path: "/register",
+        path: "register",
         element: <Register />,
       },
       {
-        path: "/forgot-password",
+        path: "forgot-password",
         element: <ForgotPassword />,
       },
       {
-        path: "/forgot-password/confirm-otp",
+        path: "forgot-password/confirm-otp",
         element: <VerifyOTP />,
       },
       {
-        path: "/user/verify",
+        path: "user/verify",
         element: <VerifyRegister />,
       },
       {
-        path: "/forgot-password/new",
+        path: "forgot-password/new",
         element: <PasswordReset />,
       },
       {
-        path: "/si",
+        path: "si",
         element: <SingleProductLoader />,
       },
       {
-        path: "",
+        path: "/admin",
         element: (
           <DashBoardWrapper>
             <Outlet />
           </DashBoardWrapper>
         ),
         children: [
-          { path: "/admin/dashboard", element: <DashboardPage /> },
+          { path: "dashboard", element: <DashboardPage /> },
           {
-            path: "/admin/add-product",
+            path: "add-product",
             element: <AddProduct />,
           },
           {
-            path: "/admin/edit-product/:id",
+            path: "edit-product/:id",
             element: <AddProduct />,
           },
           {
-            path: "/admin/add-product",
+            path: "add-product",
             element: <AddProduct />,
           },
           {
-            path: "/admin/products",
+            path: "products",
             element: <Products />,
           },
           {
-            path: "/admin/category",
+            path: "category",
             element: <Category />,
           },
           {
-            path: "/admin/add-category",
+            path: "add-category",
             element: <AddCategory />,
           },
           {
-            path: "/admin/edit-category/:id",
+            path: "edit-category/:id",
             element: <AddCategory />,
           },
           {
-            path: "/admin/brand",
+            path: "brand",
             element: <Brands />,
           },
           {
-            path: "/admin/brand/add",
+            path: "brand/add",
             element: <AddBrand />,
           },
           {
-            path: "/admin/brand/edit/:id",
+            path: "brand/edit/:id",
             element: <AddBrand />,
           },
         ],

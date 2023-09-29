@@ -2,7 +2,6 @@ import React, { useEffect, useRef } from "react";
 import { AiFillHome } from "react-icons/ai";
 import { AiOutlineInfoCircle } from "react-icons/ai";
 import { TfiClose } from "react-icons/tfi";
-import { RiShoppingCartFill } from "react-icons/ri";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { FaThList, FaTwitter, FaYoutube } from "react-icons/fa";
 import { BsInstagram } from "react-icons/bs";
@@ -14,7 +13,6 @@ import useOuterClick from "../../../hooks/outSideClick";
 
 export const navLinks = [
   { name: "Home", to: "/", icon: <AiFillHome size={"18px"} /> },
-  { name: "Cart", to: "/cart", icon: <RiShoppingCartFill size={"18px"} /> },
   { name: "About", to: "/about", icon: <AiOutlineInfoCircle size={"18px"} /> },
   {
     name: "Contact",
@@ -43,7 +41,7 @@ const MobileNav = ({ setNav, nav }) => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const currentPath = pathname.split("/")[1];
-  const { cart, logOut, user } = useAppStore();
+  const { logOut, user } = useAppStore();
   const navRef = useRef();
   useOuterClick(navRef, setNav);
   const socialIcons = [
@@ -65,7 +63,7 @@ const MobileNav = ({ setNav, nav }) => {
     >
       <ul className="flex flex-col gap-[25px] font-font-1  font-[400] uppercase">
         {navLinks.map((item, id) => {
-          if (currentPath === "admin" ? id >= 4 && id <= id : id <= 3)
+          if (currentPath === "admin" ? id >= 3 && id <= id : id <= 2)
             return (
               <li
                 key={id}
@@ -82,15 +80,6 @@ const MobileNav = ({ setNav, nav }) => {
                   }
                 >
                   {item.name}
-                  {item?.name === "Cart" && cart?.length ? (
-                    <div className="absolute right-[-20px] top-[-10px]">
-                      <div className="relative h-[20px] w-[20px] rounded-full border-[2px] border-white bg-red-600 p-[2px]">
-                        <span className="absolute left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] font-font-1 text-[10px] text-white">
-                          {cart?.length}
-                        </span>
-                      </div>
-                    </div>
-                  ) : null}
                 </NavLink>
               </li>
             );

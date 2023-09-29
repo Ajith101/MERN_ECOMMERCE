@@ -100,3 +100,12 @@ export const confirmPasswordSchema = YUP.object({
     .required("Enter Password")
     .oneOf([YUP.ref("password"), null], "Password must be match"),
 });
+
+export const contactUsSchema = YUP.object({
+  email: YUP.string()
+    .min(3, "minimum 3 character")
+    .email("invalid mail")
+    .required("Enter mail"),
+  name: YUP.string().min(2, "minimum 2 character").required("Enter Name"),
+  message: YUP.string().min(2, "minimum 2 character").required("Enter Name"),
+});

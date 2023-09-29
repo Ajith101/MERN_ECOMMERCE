@@ -2,7 +2,7 @@ const nodemailer = require("nodemailer");
 const bcrypt = require("bcrypt");
 const userModel = require("../models/userModel");
 
-const sendMail = async (mail, operation, res) => {
+const sendMail = async (mail, operation, res, req) => {
   try {
     const otp = `${Math.floor(1000 + Math.random() * 900000)}`;
     const hashOTP = await bcrypt.hash(otp, 10);
@@ -31,6 +31,21 @@ const sendMail = async (mail, operation, res) => {
         html: `<p>Note the OTP <p>
       <p>Enter this OTP <b>${otp}</b> in the app to verify your account</p>`,
       };
+    } else if (operation === "contact-us") {
+      details = {
+        from: process.env.MAIL_ID,
+        to: mail,
+        subject: "Contact Us",
+        html: `<p>${req?.body?.name}</p><br/><p>${req?.body?.message}</p>`,
+      };
+      await transporter.sendMail(details, async (err) => {
+        if (err) {
+          res.status(400).json(err);
+          // res.status(400).json({ message: "Something went wrong" });
+        } else {
+          res.status(200).json({ message: "Message successfully send" });
+        }
+      });
     }
     await transporter.sendMail(details, async (err) => {
       if (err) {

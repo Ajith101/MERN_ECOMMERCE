@@ -18,11 +18,13 @@ const {
   reSetPassword,
   verifyUser,
   getNewOtp,
+  contactUsMail,
 } = require("../controller/userController");
 const { checkAuth, checkAdmin } = require("../middleware/auth");
 
 const userRoutes = express.Router();
 
+userRoutes.post("/contact-us", contactUsMail);
 userRoutes.post("/new-otp", getNewOtp);
 userRoutes.post("/verify-user", verifyUser);
 userRoutes.post("/reset-password", reSetPassword);

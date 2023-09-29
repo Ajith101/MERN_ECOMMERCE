@@ -1,86 +1,81 @@
 import React, { useEffect, useState } from "react";
 import Layout from "../components/layout/Layout";
+import { useFormik } from "formik";
+import { contactUsSchema } from "../utils/schema";
+import { InputForm } from "../components/form/InputForm";
+import axios from "../utils/store/axios";
+import { toast } from "react-toastify";
+
+const initialValues = { name: "", email: "", message: "" };
 
 const Contact = () => {
-  const [formValues, setFormValues] = useState({
-    name: "",
-    email: "",
-    message: "",
-  });
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setFormValues((pre) => ({ ...pre, [name]: value }));
-  };
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    console.log(formValues);
-  };
-
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
+  const { values, touched, handleBlur, handleChange, handleSubmit, errors } =
+    useFormik({
+      validationSchema: contactUsSchema,
+      initialValues,
+      onSubmit: async (values, action) => {
+        try {
+          const { status } = await axios("/api/user/contact-us", {
+            method: "POST",
+            data: { ...values },
+          });
+          if (status === 200) {
+            toast.success("Message sended");
+          }
+        } catch (error) {
+          toast.error(error?.response?.data?.message);
+        }
+      },
+    });
+  const formDatas = [
+    { name: "name", type: "text", title: "Name", value: values.name },
+    { name: "email", type: "email", title: "Email", value: values.email },
+  ];
 
   return (
-    <Layout>
+    <div className="min-h-[90vh]">
       <h1 className="px-[20px] py-[20px] font-font-1 text-[20px] font-extrabold">
         Contact
       </h1>
-      <div className="mx-auto my-0 w-[90%] max-w-[650px] bg-blue-200">
-        <form
-          className="flex w-full flex-col gap-[10px] p-[10px]"
-          onSubmit={handleSubmit}
-        >
-          <div>
-            <label htmlFor="name" className="font-[600]">
-              Name
-            </label>
-            <input
-              type="text"
-              name="name"
-              id="name"
-              value={formValues.name}
-              onChange={handleChange}
-              className="w-full rounded-[5px] px-[10px] py-[10px] text-slate-700 outline-none"
-              placeholder="Name"
-            />
-          </div>
-          <div>
-            <label htmlFor="email" className="font-[600]">
-              Email
-            </label>
-            <input
-              type="email"
-              name="email"
-              id="email"
-              value={formValues.email}
-              onChange={handleChange}
-              className="w-full rounded-[5px] px-[10px] py-[10px] outline-none"
-              placeholder="Enter email address"
-            />
-          </div>
-          <div>
-            <label htmlFor="message" className="font-[600]">
+      <div className="mx-auto my-0 w-[90%] max-w-[650px] bg-blue-100">
+        <form className="flex w-full flex-col p-[10px]" onSubmit={handleSubmit}>
+          {formDatas?.map((item, id) => {
+            return (
+              <InputForm
+                key={id}
+                title={item.title}
+                name={item.name}
+                type={item.type}
+                value={item.value}
+                handleChange={handleChange}
+                handleBlur={handleBlur}
+                errors={errors}
+                touched={touched}
+              />
+            );
+          })}
+          <div className="flex flex-col pb-4">
+            <label htmlFor="email" className="text-gray-500">
               Message
             </label>
+            {errors.message && touched.message ? (
+              <span className="text-[14px] text-red-600">{errors.message}</span>
+            ) : null}
             <textarea
-              name="message"
-              className="w-full rounded-[5px] px-[10px] py-[5px] outline-none"
-              value={formValues.message}
-              onChange={handleChange}
               id="message"
-              cols="30"
-              rows="10"
+              name="message"
+              className="w-full rounded-xl border-[1px] p-2 outline-none"
+              onChange={handleChange}
+              onBlur={handleBlur}
+              value={values.message}
             />
           </div>
-          <button
-            type="submit"
-            className="w-fit cursor-pointer rounded-[6px] bg-blue-950 px-[25px] py-[10px] text-center text-[16px] font-[500] text-white sm:text-[16px]"
-          >
+          <button type="submit" className="btn-blue hover:text-white">
             Submit
           </button>
         </form>
       </div>
-    </Layout>
+    </div>
   );
 };
 

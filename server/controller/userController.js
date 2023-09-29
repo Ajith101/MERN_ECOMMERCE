@@ -149,6 +149,11 @@ const forgotPassword = asyncHandler(async (req, res) => {
   }
 });
 
+const contactUsMail = asyncHandler(async (req, res) => {
+  const { email } = req.body;
+  sendMail(email, "contact-us", res);
+});
+
 const confirmOtp = asyncHandler(async (req, res) => {
   const { email, otp } = req.body;
   const isExist = await userModel.findOne({ email });
@@ -360,4 +365,5 @@ module.exports = {
   reSetPassword,
   verifyUser,
   getNewOtp,
+  contactUsMail,
 };

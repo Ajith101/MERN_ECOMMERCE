@@ -49,7 +49,6 @@ app.use(errorHandler);
 process.on("unhandledRejection", (err) => {
   console.log(err.message);
   console.log(`shutting down the server due to unhandled Promise rejection`);
-
   server.close(() => {
     process.exit(1);
   });

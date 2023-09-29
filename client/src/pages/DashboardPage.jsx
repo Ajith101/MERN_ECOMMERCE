@@ -1,19 +1,18 @@
 import React, { useEffect, useState } from "react";
 import axios from "../utils/store/axios";
 import UserList from "../components/dashboard/UserList";
-import { useAppStore } from "../utils/store/AppStore";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const DashboardPage = () => {
   const navigate = useNavigate();
-  const { getAllUsers } = useAppStore();
   const [details, setDetails] = useState(null);
   const getDetails = async () => {
     try {
       const { data } = await axios(`/api/user/admin/details/`);
       setDetails(data);
     } catch (error) {
-      console.log(error);
+      toast.error(error?.response?.data?.message);
     }
   };
   useEffect(() => {
@@ -21,14 +20,14 @@ const DashboardPage = () => {
   }, []);
 
   return (
-    <div className="my-5 flex flex-col items-center px-2">
-      <div className="flex w-full items-center justify-between gap-3 overflow-x-auto">
-        <div
+    <div className="my-5 flex w-full flex-col items-center px-2">
+      <div className="flex w-full items-center gap-3 overflow-x-scroll">
+        <button
           onClick={() => navigate("/admin/dashboard")}
-          className="w-full bg-green-600 px-4 py-3 text-white"
+          className="flex w-full items-center justify-center bg-green-600 px-4 py-3 text-white"
         >
           All users {`(${details?.allUser})`}
-        </div>
+        </button>
         <div
           onClick={() => navigate("/admin/products")}
           className="w-full bg-orange-600 px-4 py-3 text-white"
