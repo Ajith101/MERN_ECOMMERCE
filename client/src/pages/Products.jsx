@@ -19,18 +19,7 @@ const Products = () => {
 
   return (
     <div className="mx-auto xl:w-[85%]">
-      <div className="mx-auto my-8 flex items-center justify-between gap-1 px-5">
-        <div className="flex items-center gap-3 font-semibold">
-          <h2 className="flex items-center gap-1">
-            <BiSortDown />
-            Filtered By
-          </h2>
-          {"|"}
-          <h2 className="flex items-center gap-1">
-            <BsFilter />
-            Sort By
-          </h2>
-        </div>
+      <div className="mx-auto my-1 flex items-center justify-end gap-1 px-5">
         <button
           onClick={() => navigate("/admin/add-product")}
           className="flex cursor-pointer items-center gap-1 rounded-[8px] bg-blue-950 px-3 py-3 text-white transition-all duration-100 ease-out hover:scale-110 sm:gap-2 md:px-8"

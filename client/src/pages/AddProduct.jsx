@@ -211,7 +211,7 @@ const AddProduct = () => {
   return (
     <div className="my-10 flex min-h-screen w-full items-center justify-center">
       <div className="flex h-[80%] w-[80%] max-w-[550px] flex-col">
-        <h2 className="py-4 text-[18px] font-semibold text-slate-700">
+        <h2 className="shrink-0 py-4 text-[18px] font-semibold text-slate-700">
           {id ? "Edit Product" : "Add Product"}
         </h2>
         <form
