@@ -25,7 +25,7 @@ const Swipper = ({ image }) => {
             <SwiperSlide key={id}>
               <img
                 className="h-[250px] w-[250px] rounded-[35px] object-contain sm:h-[450px] sm:w-[520px] sm:bg-[#F9F8F8] sm:p-[15px]"
-                src={item}
+                src={item?.url}
               />
             </SwiperSlide>
           );
@@ -43,7 +43,7 @@ const Swipper = ({ image }) => {
           <SwiperSlide key={index}>
             <img
               className="h-[60px] object-contain"
-              src={image}
+              src={image?.url}
               alt="product"
             />
           </SwiperSlide>

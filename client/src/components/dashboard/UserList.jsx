@@ -27,7 +27,8 @@ const UserList = () => {
   return (
     <>
       <h2 className="py-3">All users</h2>
-      <div className="mx-3 flex flex-col">
+
+      <div className="mx-3 flex w-full flex-col overflow-x-auto">
         {allUser?.map((item, id) => (
           <UserCard item={item} id={id} key={id} />
         ))}

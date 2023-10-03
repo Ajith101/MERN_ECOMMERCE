@@ -1,4 +1,4 @@
-# Product Listing App
+# ECOMMERCE MERN App
 
 ![Shopping App4](https://github.com/Ajith101/MERN_ECOMMERCE/assets/41799543/3aa1653d-d08a-4f42-8be4-ec0fc7d71de5)
 ![mobile (3)](https://github.com/Ajith101/MERN_ECOMMERCE/assets/41799543/26e6c2ba-7c24-4fd5-8bf8-1e8c94aae5bb)
