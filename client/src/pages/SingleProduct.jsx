@@ -38,7 +38,7 @@ const SingleProduct = () => {
         <>
           <div className="flex w-full flex-col gap-[25px] sm:flex-row">
             <div className="flex w-full flex-col sm:w-[50%]">
-              <div className="flex flex-col items-center justify-center">
+              <div className="flex w-full flex-col items-center justify-center">
                 <Swipper image={singleItem?.images} />
               </div>
             </div>
