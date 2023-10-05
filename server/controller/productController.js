@@ -48,6 +48,8 @@ const getAllProducts = asyncHandler(async (req, res) => {
 
   const products = await productModel
     .find(queryObject)
+    .select("name category images price _id stock sold totalRatings")
+    .populate({ path: "category", select: "name -_id" })
     .sort(sortKeys)
     .limit(limit)
     .skip(skip);
