@@ -8,7 +8,7 @@ const ProductCard = ({ item }) => {
   const navigate = useNavigate();
   const { addToCart } = useAppStore();
   return (
-    <div className="flex flex-col justify-between gap-[5px] rounded-[5px] bg-[#F9F8F8] p-[15px] shadow-md">
+    <div className="flex h-[320px] flex-col justify-between gap-[5px] rounded-[5px] bg-[#F9F8F8] p-[15px] shadow-md sm:h-[390px]">
       <div className="relative h-[200px] w-full bg-white sm:h-[250px]">
         <img
           src={item?.images[0]?.url}

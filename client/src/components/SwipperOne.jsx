@@ -5,7 +5,7 @@ import "swiper/css/pagination";
 import "swiper/css/navigation";
 import { Pagination, Thumbs } from "swiper/modules";
 
-const Swipper = ({ image }) => {
+const SwipperOne = ({ image }) => {
   const [thumbSwipper, setThumbsSwiper] = useState(null);
   return (
     <>
@@ -57,4 +57,4 @@ const Swipper = ({ image }) => {
   );
 };
 
-export default Swipper;
+export default SwipperOne;

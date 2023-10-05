@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { BiSolidUser } from "react-icons/bi";
+import { BiSolidUser, BiStore } from "react-icons/bi";
 import { CiMenuFries } from "react-icons/ci";
 import MobileNav from "./MobileNav";
 import { useNavigate } from "react-router-dom";
@@ -64,6 +64,11 @@ const Header = () => {
           Shopping App
         </h1>
         <div className="hidden items-center justify-center gap-[15px] text-[20px] sm:flex">
+          <BiStore
+            onClick={() => navigate("/store")}
+            className="hidden text-white sm:block"
+            size={"20px"}
+          />
           <div className="relative">
             <BiSolidUser
               onClick={() => setUserMenu((pre) => !pre)}
@@ -81,6 +86,11 @@ const Header = () => {
         </div>
 
         <div className="flex items-center gap-[25px]">
+          <BiStore
+            onClick={() => navigate("/store")}
+            className="text-white sm:hidden"
+            size={"20px"}
+          />
           {width > 640 && isVisible ? <SearchBar /> : null}
           <CgSearch
             className="sm:hidden"

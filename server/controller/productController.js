@@ -18,11 +18,15 @@ const getSingleProduct = asyncHandler(async (req, res) => {
 });
 
 const getAllProducts = asyncHandler(async (req, res) => {
-  const { search, sort, categoryId, rating } = req.query;
+  const { search, sort, categoryId, rating, brand } = req.query;
   let queryObject = {};
   if (categoryId) {
     queryObject.category = categoryId;
   }
+  if (brand) {
+    queryObject.brand = brand;
+  }
+
   if (search) {
     queryObject.name = { $regex: search, $options: "i" };
   }

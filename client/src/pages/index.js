@@ -1,3 +1,4 @@
+export { default as Store } from "./Store";
 export { default as ByBrand } from "./ByBrand";
 export { default as AddBrand } from "./AddBrand";
 export { default as Brands } from "./Brands";

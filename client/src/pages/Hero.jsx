@@ -98,7 +98,7 @@ const Hero = () => {
               See All
             </button>
           </div>
-          <div className="grid grid-cols-2 gap-[10px] sm:grid-cols-3 md:grid-cols-4 md:gap-[25px] lg:grid-cols-5">
+          <div className="grid grid-cols-2 gap-[10px] sm:grid-cols-3 md:grid-cols-4 md:gap-5 lg:grid-cols-5 lg:gap-6">
             {isFetching?.products
               ? Array.from({ length: 8 }, (ele, ind) => (
                   <ProductLoader key={ind} />

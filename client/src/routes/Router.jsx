@@ -24,6 +24,7 @@ import {
   AddBrand,
   Brands,
   ByBrand,
+  Store,
 } from "../pages/";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -73,6 +74,10 @@ export const appRouter = createBrowserRouter([
       {
         path: "contact",
         element: <Contact />,
+      },
+      {
+        path: "store",
+        element: <Store />,
       },
       {
         path: "product/:id",
