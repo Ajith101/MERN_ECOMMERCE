@@ -12,6 +12,7 @@ const categoryModel = require("../models/categoryModel");
 const brandModel = require("../models/brandModel");
 const sendMail = require("../utils/sendMail");
 const bcrypt = require("bcrypt");
+const contactUs = require("../utils/contactUs");
 
 const loginUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
@@ -150,8 +151,13 @@ const forgotPassword = asyncHandler(async (req, res) => {
 });
 
 const contactUsMail = asyncHandler(async (req, res) => {
-  const { email } = req.body;
-  sendMail(email, "contact-us", res);
+  const { email, message } = req.body;
+  if ((email, message)) {
+    contactUs(req.body, res);
+  } else {
+    res.status(400);
+    throw new Error("Invalid credentials");
+  }
 });
 
 const confirmOtp = asyncHandler(async (req, res) => {
