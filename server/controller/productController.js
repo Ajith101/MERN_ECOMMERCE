@@ -176,6 +176,18 @@ const updateProduct = asyncHandler(async (req, res) => {
   }
 });
 
+const addNewProduct = asyncHandler(async (req, res) => {
+  const { name } = req.body;
+  const isExist = await productModel.findOne({ name: name });
+  if (isExist) {
+    res.status(400);
+    throw new Error(`Product ${name} already exists`);
+  } else {
+    const newProduct = await productModel.create(req.body);
+    res.status(200).json(newProduct);
+  }
+});
+
 const deleteProduct = asyncHandler(async (req, res) => {
   const { id } = req.body;
   const isExist = await productModel.findOne({ _id: id });

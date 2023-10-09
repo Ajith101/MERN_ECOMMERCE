@@ -5,6 +5,16 @@ import { useAppStore } from "../utils/store/AppStore";
 import StarRating from "./StarRating";
 
 const ProductCard = ({ item }) => {
+  const productName = (str) => {
+    let maxCount = 32;
+    if (str.length <= maxCount) {
+      return str.charAt(0).toUpperCase() + str.slice(1);
+    } else {
+      let name = str.slice(0, maxCount) + "...";
+      return name.charAt(0).toUpperCase() + name.slice(1);
+    }
+  };
+
   const navigate = useNavigate();
   const { addToCart } = useAppStore();
   return (
@@ -28,7 +38,7 @@ const ProductCard = ({ item }) => {
           onClick={() => navigate(`/product/${item._id}`)}
           className="cursor-pointer font-font-1 text-[16px] font-semibold text-[#274C5B]"
         >
-          {item?.name.charAt(0).toUpperCase() + item?.name.slice(1)}
+          {productName(item?.name)}
         </h1>
         <div className="w-full border-b-[1px] border-[#DEDDDD]"></div>
         <div className="flex items-center justify-between">
