@@ -66,7 +66,7 @@ const Header = () => {
         <div className="hidden items-center justify-center gap-[15px] text-[20px] sm:flex">
           <BiStore
             onClick={() => navigate("/store")}
-            className="hidden text-white sm:block"
+            className="hidden text-white sm:block cursor-pointer"
             size={"20px"}
           />
           <div className="relative">
@@ -88,7 +88,7 @@ const Header = () => {
         <div className="flex items-center gap-[25px]">
           <BiStore
             onClick={() => navigate("/store")}
-            className="text-white sm:hidden"
+            className="text-white sm:hidden cursor-pointer"
             size={"20px"}
           />
           {width > 640 && isVisible ? <SearchBar /> : null}

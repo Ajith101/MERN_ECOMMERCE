@@ -1,27 +1,46 @@
 import React, { useEffect, useState } from "react";
 import { useAppStore } from "../utils/store/AppStore";
-import { useNavigate, useParams } from "react-router-dom";
-import useFetch from "../../hooks/fetchList";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import ProductLoader from "../components/loader/ProductLoader";
 import axios from "../utils/store/axios";
 import ProductCard from "../components/ProductCard";
 import { useScreenSize } from "../../hooks/screenSize";
-import { BsEmojiFrown, BsFillEmojiFrownFill } from "react-icons/bs";
+import { BsEmojiFrown } from "react-icons/bs";
+import Pagination from "../components/Pagination";
 
 const Store = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [details, setDetails] = useState();
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(null);
   const { width } = useScreenSize();
   const { getAllBrands, brands, categorys, isFetching } = useAppStore();
   const navigate = useNavigate();
+  const rating = searchParams.get("rating") ? searchParams.get("rating") : "";
+  const sort = searchParams.get("sort") ? searchParams.get("sort") : "";
+  const brand = searchParams.get("brand") ? searchParams.get("brand") : "";
+  const page = searchParams.get("page") ? searchParams.get("page") : 1;
+  const categoryId = searchParams.get("categoryId")
+    ? searchParams.get("categoryId")
+    : "";
   const [allProducts, setAllProducts] = useState([]);
   const [formData, setFormData] = useState({
-    categoryId: "",
-    brand: "",
-    sort: "",
-    rating: "",
+    rating,
+    categoryId,
+    brand,
+    sort,
+    page,
   });
   const handleChange = (e) => {
     const { name, value } = e.target;
+    setDetails((pre) => ({ ...pre, [name]: value }));
     setFormData((pre) => ({ ...pre, [name]: value }));
+  };
+
+  const handlePagination = (page) => {
+    setFormData((pre) => ({ ...pre, page }));
+    setDetails((pre) => ({ ...pre, page }));
+    setCurrentPage(page);
   };
 
   const getAllProducts = async () => {
@@ -37,6 +56,8 @@ const Store = () => {
           isFetching: { ...state.isFetching, products: false, loading: false },
         }));
         setAllProducts(data);
+        setCurrentPage(data.page);
+        setTotalPages(data.numberOfPages);
       }
     } catch (error) {
       console.log(error);
@@ -45,7 +66,11 @@ const Store = () => {
 
   useEffect(() => {
     getAllProducts();
-  }, [formData]);
+    if (details) {
+      setSearchParams(details);
+    }
+    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+  }, [details, currentPage]);
 
   useEffect(() => {
     getAllBrands();
@@ -208,6 +233,13 @@ const Store = () => {
                 ))
               : displayProducts}
           </div>
+          <Pagination
+            handlePagination={handlePagination}
+            setFormData={setFormData}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+            totalPage={totalPages}
+          />
         </div>
       </div>
     </div>

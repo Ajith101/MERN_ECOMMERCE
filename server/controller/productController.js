@@ -58,7 +58,9 @@ const getAllProducts = asyncHandler(async (req, res) => {
     .sort(sortKeys)
     .countDocuments();
   const numberOfPages = Math.ceil(totalProducts / limit);
-  res.status(200).json({ totalProducts, numberOfPages, products });
+  res
+    .status(200)
+    .json({ totalProducts, numberOfPages, products, page: currentPage });
 });
 
 const getSingleProductEdit = async (req, res) => {

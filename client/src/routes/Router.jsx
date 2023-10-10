@@ -36,7 +36,6 @@ import SingleProductLoader from "../components/loader/SingleProductLoader";
 const AppLayout = () => {
   const { pathname } = useLocation();
   const { loading } = useAppStore();
-
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
   }, [pathname]);
@@ -77,6 +76,10 @@ export const appRouter = createBrowserRouter([
       },
       {
         path: "store",
+        element: <Store />,
+      },
+      {
+        path: "store:details",
         element: <Store />,
       },
       {
