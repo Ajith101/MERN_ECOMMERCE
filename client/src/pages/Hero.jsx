@@ -44,12 +44,14 @@ const Hero = () => {
     allProducts,
     getAllBrands,
     brands,
+    getPopularProducts,
+    popularProducts,
   } = useAppStore();
   useEffect(() => {
-    getAllProducts();
+    getPopularProducts();
     getAllBrands();
   }, []);
-  const displayProducts = allProducts?.map((item, id) => {
+  const displayProducts = popularProducts?.map((item, id) => {
     return <ProductCard item={item} key={id} />;
   });
 

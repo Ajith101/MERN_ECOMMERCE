@@ -1,12 +1,7 @@
 import React, { useEffect } from "react";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 
-const Pagination = ({
-  totalPage,
-  currentPage,
-  handlePagination,
-  setCurrentPage,
-}) => {
+const Pagination = ({ totalPage, currentPage, handlePagination }) => {
   const displayPages = Array.from({ length: totalPage }, (ele, index) => {
     let page = index + 1;
     return (
@@ -14,8 +9,8 @@ const Pagination = ({
         disabled={currentPage === page}
         onClick={() => handlePagination(page)}
         key={index}
-        className={`h-[38px] w-[38px] rounded-full border-[2px] text-center ${
-          currentPage === page ? "border-0 bg-blue-500 text-white" : ""
+        className={`h-[38px] w-[38px] rounded-full text-center ${
+          currentPage === page ? "bg-blue-500 text-white" : "border-[2px]"
         }`}
       >
         {page}

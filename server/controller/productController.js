@@ -63,6 +63,16 @@ const getAllProducts = asyncHandler(async (req, res) => {
     .json({ totalProducts, numberOfPages, products, page: currentPage });
 });
 
+const getPopularProducts = asyncHandler(async (req, res) => {
+  const products = await productModel
+    .find()
+    .sort({ totalRatings: -1 })
+    .select("name category images price _id stock sold totalRatings")
+    .populate({ path: "category", select: "name -_id" })
+    .limit(8);
+  res.status(200).json(products);
+});
+
 const getSingleProductEdit = async (req, res) => {
   try {
     const { id } = req.body;
@@ -237,4 +247,5 @@ module.exports = {
   deleteProductImage,
   getProductsByCategory,
   searchProduct,
+  getPopularProducts,
 };

@@ -16,6 +16,7 @@ export const useAppStore = create((set, get) => {
       brands: false,
     },
     allProducts: [],
+    popularProducts: [],
     categorys: [],
     categoryProducts: [],
     searchResults: [],
@@ -49,6 +50,26 @@ export const useAppStore = create((set, get) => {
         }));
       }
     },
+    getPopularProducts: async () => {
+      try {
+        set((state) => ({
+          loading: true,
+          isFetching: { ...state.isFetching, products: true },
+        }));
+        const { data } = await axios(`/api/products/popular`);
+        set((state) => ({
+          popularProducts: data,
+          loading: false,
+          isFetching: { ...state.isFetching, products: false },
+        }));
+      } catch (error) {
+        toast.error(error?.response?.data?.message);
+        set(() => ({
+          errors: error?.response?.data?.message,
+        }));
+      }
+    },
+
     getAllBrands: async () => {
       try {
         set((state) => ({

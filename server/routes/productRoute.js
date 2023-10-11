@@ -16,6 +16,7 @@ const {
   getProductsByCategory,
   searchProduct,
   getAllProducts,
+  getPopularProducts,
 } = require("../controller/productController");
 const { checkAuth, checkAdmin } = require("../middleware/auth");
 
@@ -23,6 +24,7 @@ const productRoute = express.Router();
 
 productRoute.post("/search", searchProduct);
 productRoute.get("/", getAllProduct);
+productRoute.get("/popular", getPopularProducts);
 productRoute.get("/by", getAllProducts);
 productRoute.get("/category/:name", getProductsByCategory);
 productRoute.put("/", [checkAuth, checkAdmin], updateProduct);
