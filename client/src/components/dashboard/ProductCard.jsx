@@ -5,6 +5,15 @@ import { MdDelete } from "react-icons/md";
 import { AiOutlineEye } from "react-icons/ai";
 
 const ProductCard = ({ item, setShowpopUp, setId }) => {
+  const productName = (str) => {
+    let maxCount = 32;
+    if (str.length <= maxCount) {
+      return str.charAt(0).toUpperCase() + str.slice(1);
+    } else {
+      let name = str.slice(0, maxCount) + "...";
+      return name.charAt(0).toUpperCase() + name.slice(1);
+    }
+  };
   const navigate = useNavigate();
   return (
     <div className="relative grid cursor-pointer grid-cols-5 gap-2 rounded-xl bg-white p-3 shadow-md">
@@ -17,7 +26,7 @@ const ProductCard = ({ item, setShowpopUp, setId }) => {
           />
         </div>
         <div className="flex w-[50%] flex-col items-start gap-2 ">
-          <h2 className="break-all font-[600]">{item?.name}</h2>
+          <h2 className="break-all font-[600]">{productName(item?.name)}</h2>
           <h2>{item?.category?.name}</h2>
           <h2>{item?.brand?.name}</h2>
         </div>

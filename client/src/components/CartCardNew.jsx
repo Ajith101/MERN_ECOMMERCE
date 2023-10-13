@@ -6,6 +6,15 @@ import { useAppStore } from "../utils/store/AppStore";
 const CartCardNew = ({ item }) => {
   const { removeCart, addQty, decreaseQty } = useAppStore();
   const navigate = useNavigate();
+  const productName = (str) => {
+    let maxCount = 32;
+    if (str.length <= maxCount) {
+      return str.charAt(0).toUpperCase() + str.slice(1);
+    } else {
+      let name = str.slice(0, maxCount) + "...";
+      return name.charAt(0).toUpperCase() + name.slice(1);
+    }
+  };
   return (
     <>
       <div className="flex w-full grid-cols-2">
@@ -19,10 +28,12 @@ const CartCardNew = ({ item }) => {
           </div>
           <div className="flex flex-col">
             <h2 className="font-bold text-slate-500">
-              {item?.productId?.name}
+              {productName(item?.productId?.name)}
             </h2>
             <p className="text-slate-500">Price: ${item?.productId?.price}</p>
-            <p className="text-slate-500">{item?.productId?.category?.name}</p>
+            <p className="text-slate-500">
+              {productName(item?.productId?.category?.name)}
+            </p>
             <div className="flex items-center gap-2">
               <FaMinus
                 className="cursor-pointer"

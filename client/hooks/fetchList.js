@@ -5,6 +5,9 @@ import axios from "./../src/utils/store/axios";
 
 const useFetch = (url) => {
   const [results, setResults] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPage, setTotalPage] = useState(1);
+
   const getProducts = async () => {
     try {
       useAppStore.setState((state) => ({
@@ -26,7 +29,7 @@ const useFetch = (url) => {
     getProducts();
   }, [url]);
 
-  return { results };
+  return { results, totalPage, currentPage, setCurrentPage };
 };
 
 export default useFetch;

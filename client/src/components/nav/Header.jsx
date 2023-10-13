@@ -56,7 +56,7 @@ const Header = () => {
   }, [user]);
   return (
     <>
-      <div className="sticky top-0 z-[100] flex w-full items-center justify-between border-b-[1px] bg-blue-950 px-[20px] py-[18px] text-white sm:py-[20px] md:px-[50px] lg:px-[110px]">
+      <header className="sticky top-0 z-[100] flex w-full items-center justify-between border-b-[1px] bg-blue-950 px-[20px] py-[18px] text-white sm:py-[20px] md:px-[50px] lg:px-[110px]">
         <h1
           className="cursor-pointer text-[20px] font-[700] transition-all ease-in-out hover:scale-110 sm:text-[28px]"
           onClick={() => navigate("/")}
@@ -66,7 +66,7 @@ const Header = () => {
         <div className="hidden items-center justify-center gap-[15px] text-[20px] sm:flex">
           <BiStore
             onClick={() => navigate("/store")}
-            className="hidden text-white sm:block cursor-pointer"
+            className="hidden cursor-pointer text-white sm:block"
             size={"20px"}
           />
           <div className="relative">
@@ -88,7 +88,7 @@ const Header = () => {
         <div className="flex items-center gap-[25px]">
           <BiStore
             onClick={() => navigate("/store")}
-            className="text-white sm:hidden cursor-pointer"
+            className="cursor-pointer text-white sm:hidden"
             size={"20px"}
           />
           {width > 640 && isVisible ? <SearchBar /> : null}
@@ -119,7 +119,7 @@ const Header = () => {
             {user?.name}
           </div>
         ) : null}
-      </div>
+      </header>
       <MobileNav setNav={setNav} nav={nav} />
       {showCart ? (
         <CartList setShowCart={setShowCart} showCart={showCart} />
