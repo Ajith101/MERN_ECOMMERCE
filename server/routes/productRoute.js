@@ -17,11 +17,13 @@ const {
   searchProduct,
   getAllProducts,
   getPopularProducts,
+  testProducts,
 } = require("../controller/productController");
 const { checkAuth, checkAdmin } = require("../middleware/auth");
 
 const productRoute = express.Router();
 
+productRoute.post("/test", testProducts);
 productRoute.post("/search", searchProduct);
 productRoute.get("/", getAllProduct);
 productRoute.get("/popular", getPopularProducts);

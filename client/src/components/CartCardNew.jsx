@@ -2,16 +2,17 @@ import React from "react";
 import { FaMinus, FaPlus, FaTrash } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { useAppStore } from "../utils/store/AppStore";
+import { priceFormat } from "../../utils/PriceFormat";
 
 const CartCardNew = ({ item }) => {
   const { removeCart, addQty, decreaseQty } = useAppStore();
   const navigate = useNavigate();
   const productName = (str) => {
     let maxCount = 32;
-    if (str.length <= maxCount) {
-      return str.charAt(0).toUpperCase() + str.slice(1);
+    if (str?.length <= maxCount) {
+      return str?.charAt(0).toUpperCase() + str?.slice(1);
     } else {
-      let name = str.slice(0, maxCount) + "...";
+      let name = str?.slice(0, maxCount) + "...";
       return name.charAt(0).toUpperCase() + name.slice(1);
     }
   };
@@ -30,7 +31,9 @@ const CartCardNew = ({ item }) => {
             <h2 className="font-bold text-slate-500">
               {productName(item?.productId?.name)}
             </h2>
-            <p className="text-slate-500">Price: ${item?.productId?.price}</p>
+            <p className="text-slate-500">
+              Price: {priceFormat(item?.productId?.price)}
+            </p>
             <p className="text-slate-500">
               {productName(item?.productId?.category?.name)}
             </p>
@@ -63,7 +66,7 @@ const CartCardNew = ({ item }) => {
           <div>
             <h2 className="text-slate-500">Total:</h2>
             <p className="text-slate-500">
-              {Math.ceil(item?.quantity * item?.productId?.price)}
+              {priceFormat(Math.ceil(item?.quantity * item?.productId?.price))}
             </p>
           </div>
         </div>

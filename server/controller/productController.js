@@ -2,6 +2,15 @@ const categoryModel = require("../models/categoryModel");
 const productModel = require("../models/productModel");
 const asyncHandler = require("../middleware/asyncHandler");
 const cloudinary = require("cloudinary");
+const APIFeatures = require("../utils/apiFeatures");
+
+const testProducts = asyncHandler(async (req, res) => {
+  const apiFeatures = new APIFeatures(productModel.find(), req.query)
+    .filter()
+    .paginate();
+  const products = await apiFeatures.query;
+  res.status(200).json(products);
+});
 
 const getSingleProduct = asyncHandler(async (req, res) => {
   const { id } = req.body;
@@ -18,50 +27,64 @@ const getSingleProduct = asyncHandler(async (req, res) => {
 });
 
 const getAllProducts = asyncHandler(async (req, res) => {
-  const { search, sort, categoryId, rating, brand } = req.query;
-  let queryObject = {};
-  if (categoryId) {
-    queryObject.category = categoryId;
-  }
-  if (brand) {
-    queryObject.brand = brand;
-  }
-
-  if (search) {
-    queryObject.name = { $regex: search, $options: "i" };
-  }
-  if (rating) {
-    queryObject.totalRatings = { $lte: rating };
-  }
-
-  const sortOptions = {
-    high: "-price",
-    low: "price",
-    "a-z": "name",
-    "z-a": "-name",
-  };
-  const sortKeys = sortOptions[sort] || sortOptions.newest;
-
-  const currentPage = Number(req.query.page) || 1;
-  const limit = 10;
-  const skip = (currentPage - 1) * limit;
-
-  const products = await productModel
-    .find(queryObject)
+  const apiFeatures = new APIFeatures(productModel.find(), req.query)
+    .filter()
+    .paginate();
+  const products = await apiFeatures.query
     .select("name category images price _id stock sold totalRatings")
-    .populate({ path: "category", select: "name -_id" })
-    .sort(sortKeys)
-    .limit(limit)
-    .skip(skip);
-  const totalProducts = await productModel
-    .find(queryObject)
-    .sort(sortKeys)
-    .countDocuments();
-  const numberOfPages = Math.ceil(totalProducts / limit);
+    .populate({ path: "category", select: "name -_id" });
+  const currentPage = Number(req.query.page) || 1;
+  const totalProducts = products.length;
+  const numberOfPages = Math.ceil(totalProducts / 10);
   res
     .status(200)
     .json({ totalProducts, numberOfPages, products, page: currentPage });
 });
+// const getAllProducts = asyncHandler(async (req, res) => {
+//   const { search, sort, categoryId, rating, brand } = req.query;
+//   let queryObject = {};
+//   if (categoryId) {
+//     queryObject.category = categoryId;
+//   }
+//   if (brand) {
+//     queryObject.brand = brand;
+//   }
+
+//   if (search) {
+//     queryObject.name = { $regex: search, $options: "i" };
+//   }
+//   if (rating) {
+//     queryObject.totalRatings = { $lte: rating };
+//   }
+
+//   const sortOptions = {
+//     high: "-price",
+//     low: "price",
+//     "a-z": "name",
+//     "z-a": "-name",
+//   };
+//   const sortKeys = sortOptions[sort] || sortOptions.newest;
+
+//   const currentPage = Number(req.query.page) || 1;
+//   const limit = 10;
+//   const skip = (currentPage - 1) * limit;
+
+//   const products = await productModel
+//     .find(queryObject)
+//     .select("name category images price _id stock sold totalRatings")
+//     .populate({ path: "category", select: "name -_id" })
+//     .sort(sortKeys)
+//     .limit(limit)
+//     .skip(skip);
+//   const totalProducts = await productModel
+//     .find(queryObject)
+//     .sort(sortKeys)
+//     .countDocuments();
+//   const numberOfPages = Math.ceil(totalProducts / limit);
+//   res
+//     .status(200)
+//     .json({ totalProducts, numberOfPages, products, page: currentPage });
+// });
 
 const getPopularProducts = asyncHandler(async (req, res) => {
   const products = await productModel
@@ -248,4 +271,5 @@ module.exports = {
   getProductsByCategory,
   searchProduct,
   getPopularProducts,
+  testProducts,
 };

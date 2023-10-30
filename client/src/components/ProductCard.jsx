@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { BsCart2 } from "react-icons/bs";
 import { useAppStore } from "../utils/store/AppStore";
 import StarRating from "./StarRating";
+import { priceFormat } from "./../../utils/PriceFormat";
 
 const ProductCard = ({ item }) => {
   const productName = (str) => {
@@ -44,7 +45,7 @@ const ProductCard = ({ item }) => {
         <div className="flex items-center justify-between">
           <div>
             <h2 className="font-font-1 text-[16px] font-bold text-[#274C5B]">
-              {"$"} {item?.price}
+              {priceFormat(Math.ceil(item?.price))}
             </h2>
             <StarRating rating={item?.totalRatings} />
           </div>

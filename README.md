@@ -1,17 +1,30 @@
 # ECOMMERCE MERN App
 
-![Shopping App4](https://github.com/Ajith101/MERN_ECOMMERCE/assets/41799543/3aa1653d-d08a-4f42-8be4-ec0fc7d71de5)
-![mobile (3)](https://github.com/Ajith101/MERN_ECOMMERCE/assets/41799543/26e6c2ba-7c24-4fd5-8bf8-1e8c94aae5bb)
+![Shopping App](https://github.com/Ajith101/MERN_ECOMMERCE/assets/41799543/74018846-dd40-4883-ba9f-f27965ade4a2)
+![Shopping App](https://github.com/Ajith101/MERN_ECOMMERCE/assets/41799543/85523db2-0353-4e56-867f-0459384946a7)
 
-This is a Product Listing App, designed to showcase a collection of products with categories and search functionality. The application provides users with an interface to browse through a wide range of products, view product details, and filter products based on categories. Additionally, it includes a shopping cart functionality that allows users to add products to their cart and proceed to checkout. The app is built using modern web development technologies to ensure high performance and responsiveness.
+This is a E-commerce App, designed to showcase a collection of products with categories and Brand and search functionality. The application provides users with an interface to browse through a wide range of products, view product details, and filter products based on categories. Additionally, it includes a shopping cart functionality that allows users to add products to their cart and proceed to checkout. The app is built using modern web development technologies to ensure high performance and responsiveness.
 
 ## Features
 
-- Product Catalog: Browse through a collection of products with categories and search functionality.
+- Product Catalog: Browse through a collection of products with categories,brand and search functionality.
 - Product Details: View detailed information about each product.
 - Categories: Filter products based on different categories.
+- Brand: Filter products based on different Brands.
 - Add to Cart: Users can add products to their shopping cart.
 - Shopping Cart: View and manage the items added to the shopping cart.
+- Login & register
+- Forgot Password
+
+## Features of Admin Side
+
+- Product Listing Dashboard
+- Add and edit products
+- Add and edit Categories.
+- Add and edit Brand.
+- User management.
+- Delete existing content
+- Pagination
 
 ## Technologies Used
 
@@ -29,19 +42,18 @@ This is a Product Listing App, designed to showcase a collection of products wit
   - Cors: A middleware for enabling Cross-Origin Resource Sharing.
   - Dotenv: A module for loading environment variables from a .env file.
   - Morgan: A middleware for logging HTTP requests.
+  - JSON Web Tokens (JWT): For secure user authentication and authorization.
+  - Nodemailer: To send password reset emails to users for enhanced security.
+  - Bcrypt: To securely hash and store user password in the database.
+  - Cloudinary: For efficient image hosting, retrieval,and management.
+  - cookie-parser: A middleware which parses cookies attached to the client request object.
 
 ## Screenshot
 
-![Shopping App1](https://github.com/Ajith101/MERN_ECOMMERCE/assets/41799543/e16d8856-999f-4931-a2aa-5bdf1caf7b4a)
-![Shopping App2](https://github.com/Ajith101/MERN_ECOMMERCE/assets/41799543/b137e7d2-d17a-43c6-b523-a1c7a5f5b8eb)
-![Shopping App3](https://github.com/Ajith101/MERN_ECOMMERCE/assets/41799543/0497689f-f474-4201-ab84-e561b397feba)
-![Shopping App](https://github.com/Ajith101/MERN_ECOMMERCE/assets/41799543/783a3c74-11d5-4a31-bc4b-33e582c0e929)
-![mobile (1)](https://github.com/Ajith101/MERN_ECOMMERCE/assets/41799543/4c3558b7-5cc9-429d-9056-67c4063b72b5)
-![mobile (2)](https://github.com/Ajith101/MERN_ECOMMERCE/assets/41799543/b2c18826-36f1-4f22-9c24-a8115245c918)
-![mobile (4)](https://github.com/Ajith101/MERN_ECOMMERCE/assets/41799543/0537bf8a-a22c-4fcb-8bd5-e3002c1f2726)
-![mobile (5)](https://github.com/Ajith101/MERN_ECOMMERCE/assets/41799543/78423089-b613-4ac3-a057-ccf133acaa35)
-![mobile (6)](https://github.com/Ajith101/MERN_ECOMMERCE/assets/41799543/5dec03c7-96f4-478b-a9f3-ed0602f9a9c3)
-![mobile](https://github.com/Ajith101/MERN_ECOMMERCE/assets/41799543/3871b709-2e98-4de1-a807-62bbce0950b6)
+![Shopping App](https://github.com/Ajith101/MERN_ECOMMERCE/assets/41799543/1f1a3fea-f8d3-4721-812c-9add1190a247)
+![Shopping App](https://github.com/Ajith101/MERN_ECOMMERCE/assets/41799543/affa9124-ab77-4764-8a8e-3003bb738402)
+![Shopping App](https://github.com/Ajith101/MERN_ECOMMERCE/assets/41799543/8a53a10c-2c5a-44a4-9e17-dd37cdca44fb)
+![Shopping App](https://github.com/Ajith101/MERN_ECOMMERCE/assets/41799543/77e719eb-9962-4396-83e0-4ec5ae1daa32)
 
 ## Installation
 

@@ -5,6 +5,7 @@ import CartCardNew from "./CartCardNew";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import { useAppStore } from "../utils/store/AppStore";
 import { useNavigate } from "react-router-dom";
+import { priceFormat } from "../../utils/PriceFormat";
 
 const CartList = ({ setShowCart, showCart }) => {
   const { cart, cartOne, user, getUserCart } = useAppStore();
@@ -15,6 +16,17 @@ const CartList = ({ setShowCart, showCart }) => {
   }, [user]);
   const cartRef = useRef(null);
   useOuterClick(cartRef, setShowCart);
+
+  const { total, qty } = cart?.products?.reduce(
+    (acc, item) => {
+      const itemTotal = item.productId.price * item.quantity;
+      acc.total += itemTotal;
+      acc.qty += item.quantity;
+      return acc;
+    },
+    { total: 0, qty: 0 }
+  );
+
   return (
     <div
       className={`fixed top-0 z-[100] flex h-screen w-full items-center justify-center backdrop-blur-sm transition-opacity duration-200 ${
@@ -51,7 +63,17 @@ const CartList = ({ setShowCart, showCart }) => {
         </div>
         {cart?.products?.length ? (
           <div className="mt-4 h-full">
-            <h2 className="font-bold text-slate-500">Total Cost</h2>
+            <div className="flex items-baseline justify-between">
+              <h2 className="font-bold text-slate-500">
+                Total Cost{" "}
+                <span className="text-red-500">
+                  {priceFormat(Math.ceil(total))}
+                </span>
+              </h2>
+              <h2 className="font-bold text-slate-500">
+                Total Qty <span className="text-red-500">{qty}</span>
+              </h2>
+            </div>
             <p className="text-[14px]">
               *Shipping and taxes calculated at checkout
             </p>{" "}

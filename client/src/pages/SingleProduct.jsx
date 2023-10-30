@@ -8,6 +8,7 @@ import Swipper from "../components/Swipper";
 import { TbTruckDelivery } from "react-icons/tb";
 import { MdOutlineAssignment } from "react-icons/md";
 import SingleProductLoader from "../components/loader/SingleProductLoader";
+import { priceFormat } from "../../utils/PriceFormat";
 
 const SingleProduct = () => {
   const [quantity, setQuantity] = useState(1);
@@ -60,14 +61,14 @@ const SingleProduct = () => {
               <StarRating rating={singleItem?.totalRatings} />
               <div className="flex items-center gap-[20px]">
                 <h1 className="text-[22px] font-[700]">
-                  {"$"}
-                  {singleItem?.price}
+                  {priceFormat(Math.ceil(singleItem?.price))}
                 </h1>
                 <s className="text-[18px] text-slate-600">
-                  {"$"}
-                  {Math.ceil(
-                    (singleItem?.price * 100) /
-                      (100 - singleItem?.discountPrice)
+                  {priceFormat(
+                    Math.ceil(
+                      (singleItem?.price * 100) /
+                        (100 - singleItem?.discountPrice)
+                    )
                   )}
                 </s>
                 <span className="flex items-center justify-center rounded-xl bg-[red] bg-opacity-90 px-[10px] py-[3px] text-center text-[12px] text-white">

@@ -219,6 +219,7 @@ const getCartNumber = asyncHandler(async (req, res) => {
 
 const getUserCart = asyncHandler(async (req, res) => {
   const { userId } = req;
+  console.log(userId);
   const cart = await cartModel
     .findOne({ orderedBy: userId })
     .populate({
